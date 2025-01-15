@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import qutip as qt
 
-from .quantum_utils import QuantumUtils
+from quantum_utils import QuantumUtils
 
 
 class DataPreprocessing:

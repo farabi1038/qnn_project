@@ -2,8 +2,8 @@
 
 import numpy as np
 import qutip as qt
-from .quantum_utils import QuantumUtils
-from .qnn_architecture import QNNArchitecture
+from quantum_utils import QuantumUtils
+from qnn_architecture import QNNArchitecture
 
 
 class AnomalyDetection:

@@ -3,7 +3,8 @@
 import numpy as np
 import qutip as qt
 from copy import deepcopy
-from .quantum_utils import QuantumUtils
+from quantum_utils import QuantumUtils
+from logger import logger
 
 
 class QNNArchitecture:
