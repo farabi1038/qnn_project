@@ -1,25 +1,26 @@
-# qnn_project/__init__.py
+__version__ = "1.0.0"
 
-__version__ = "0.1.0"
-
-# Import central logger so it's accessible across the package
-from .logger import logger
-
-# Import primary classes and functions for cleaner imports
-from .quantum_utils import QuantumUtils, qubit0, qubit1, qubit0mat, qubit1mat
+# Import primary classes and functions for easy access
+from .utils import load_config, train_qnn, optimize_threshold, load_cesnet_data
+from .quantum_utils import QuantumUtils
 from .qnn_architecture import QNNArchitecture
 from .anomaly_detection import AnomalyDetection
-from .data_preprocessing import DataPreprocessing
+from .micro_segmentation import MicroSegmentation
+from .zero_trust_framework import ZeroTrustFramework
+from .discrete_qnn import DiscreteVariableQNN
+from .continuous_qnn import ContinuousVariableQNN
 
-# Optionally, define a list of public objects for wildcard imports
+# Public API for the package
 __all__ = [
-    "logger",
+    "load_config",
+    "train_qnn",
+    "optimize_threshold",
+    "load_cesnet_data",
     "QuantumUtils",
     "QNNArchitecture",
     "AnomalyDetection",
-    "DataPreprocessing",
-    "qubit0",
-    "qubit1",
-    "qubit0mat",
-    "qubit1mat",
+    "MicroSegmentation",
+    "ZeroTrustFramework",
+    "DiscreteVariableQNN",
+    "ContinuousVariableQNN",
 ]

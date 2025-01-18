@@ -1,85 +1,63 @@
-# qnn_project/data_preprocessing.py
-
-import numpy as np
 import pandas as pd
-import qutip as qt
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from logger import logger
 
-from quantum_utils import QuantumUtils
 
-
-class DataPreprocessing:
+def load_cesnet_data(csv_path: str, test_size: float = 0.2, random_state: int = 42):
     """
-    Data loading, preprocessing, and quantum encoding utilities.
+    Loads and preprocesses CESNET data for anomaly detection.
+    
+    :param csv_path: Path to the CSV file containing the dataset.
+    :param test_size: Fraction of the data to use for testing.
+    :param random_state: Seed for reproducibility in train-test split.
+    :return: Tuple of (X_train, X_test, y_train, y_test).
     """
+    try:
+        logger.info(f"Loading data from {csv_path}")
+        df = pd.read_csv(csv_path)
+    except FileNotFoundError:
+        logger.error(f"File not found: {csv_path}")
+        raise
+    except Exception as e:
+        logger.error(f"Error loading file {csv_path}: {e}")
+        raise
 
-    @staticmethod
-    def load_cesnet_data(file_path, num_samples=5):
-        """
-        Load CESNET data from CSV, return normalized data and original dataframe.
-        """
-        df = pd.read_csv(file_path)
-        df = df.head(num_samples)
-        features = [
-            'n_flows', 'n_packets', 'n_bytes',
-            'n_dest_ip', 'n_dest_ports',
-            'tcp_udp_ratio_packets',
-            'dir_ratio_packets',
-            'avg_duration'
-        ]
-        data = df[features].values
+    # Example preprocessing: Adjust to match your dataset schema
+    logger.info("Starting data cleaning and preprocessing...")
 
-        # Avoid division by zero for near-constant features
-        std = np.std(data, axis=0)
-        std = np.where(std < 1e-10, 1e-10, std)
+    # Define features and target column
+    features = [
+        "id_time", "n_flows", "n_packets", "n_bytes", "n_dest_asn",
+        "n_dest_ports", "n_dest_ip", "tcp_udp_ratio_packets",
+        "tcp_udp_ratio_bytes", "dir_ratio_packets", "dir_ratio_bytes",
+        "avg_duration", "avg_ttl"
+    ]
 
-        normalized_data = (data - np.mean(data, axis=0)) / std
-        return normalized_data, df
+    # Define a synthetic target column if needed (binary classification for anomalies)
+    # Here we create an example "label" column based on a threshold on `n_packets`
+    threshold = 75000  # Example threshold for anomaly classification
+    df["label"] = (df["n_packets"] > threshold).astype(int)
 
-    @staticmethod
-    def preprocess_features(df):
-        """
-        Basic feature engineering example.
-        """
-        df['bytes_per_packet'] = df['n_bytes'] / df['n_packets']
-        df['packets_per_flow'] = df['n_packets'] / df['n_flows']
-        df['ports_per_ip'] = df['n_dest_ports'] / df['n_dest_ip']
-        return df
+    if "label" not in df.columns:
+        logger.error("No 'label' column found in the dataset.")
+        raise ValueError("The dataset must include a 'label' column.")
 
-    @staticmethod
-    def encode_traffic_to_quantum(normalized_data):
-        """
-        Convert normalized traffic data to an array of quantum states.
-        Each row is normalized; we map it to a quantum state vector.
-        """
-        quantum_states = []
-        for sample in normalized_data:
-            norm = np.linalg.norm(sample)
-            if norm != 0:
-                quantum_state = sample / norm
-            else:
-                quantum_state = sample
+    # Separate features and labels
+    X = df[features].values
+    y = df["label"].values
 
-            # Number of qubits needed to embed 'len(sample)' features
-            num_qubits = int(np.ceil(np.log2(len(sample))))
-            padded_vec = np.zeros(2**num_qubits, dtype=np.complex128)
+    # Normalize features using MinMaxScaler
+    scaler = MinMaxScaler()
+    X_scaled = scaler.fit_transform(X)
 
-            # Place the normalized features in the first len(sample) slots
-            padded_vec[:len(sample)] = quantum_state
-            padded_vec = padded_vec / np.linalg.norm(padded_vec)
+    logger.info(f"Data normalization complete. Shape: {X_scaled.shape}")
 
-            # Create ket
-            qobj_state = qt.Qobj(padded_vec.reshape(-1, 1),
-                                 dims=[[2]*num_qubits, [1]*num_qubits])
-            quantum_states.append(qobj_state)
-        return quantum_states
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_scaled, y, test_size=test_size, random_state=random_state, stratify=y
+    )
+    logger.info(f"Data split complete: Train size = {len(X_train)}, Test size = {len(X_test)}")
 
-    @staticmethod
-    def prepare_training_data(quantum_states, noise_level=0.1):
-        """
-        Prepare training data pairs of (clean_state, noisy_target_state).
-        """
-        training_data = []
-        for state in quantum_states:
-            noisy_target = QuantumUtils.noisy_state(state, noise_level)
-            training_data.append([state, noisy_target])
-        return training_data
+    return X_train, X_test, y_train, y_test

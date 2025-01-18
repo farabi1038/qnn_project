@@ -107,3 +107,14 @@ class QuantumUtils:
         noisy_state = input_state.full() + noise
         noisy_state = noisy_state / np.linalg.norm(noisy_state)
         return qt.Qobj(noisy_state, dims=input_state.dims)
+    
+
+    @staticmethod
+    def adjust_threshold(current_threshold: float, feedback_data: list, learning_rate: float = 0.01) -> float:
+        """
+        Dynamically adjust the threshold based on feedback.
+        """
+        false_positives = sum(1 for data in feedback_data if data["predicted"] == "Anomalous" and data["actual"] == "Normal")
+        false_negatives = sum(1 for data in feedback_data if data["predicted"] == "Normal" and data["actual"] == "Anomalous")
+        adjustment = learning_rate * (false_positives - false_negatives)
+        return max(0, min(1, current_threshold + adjustment))

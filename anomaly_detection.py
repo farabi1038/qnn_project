@@ -1,75 +1,116 @@
-# qnn_project/anomaly_detection.py
-
 import numpy as np
 import qutip as qt
 from quantum_utils import QuantumUtils
 from qnn_architecture import QNNArchitecture
-
+from logger import logger
 
 class AnomalyDetection:
     """
     A class for anomaly detection functionalities, 
-    including anomaly scoring, threshold adjustments, and policy decisions.
+    integrating quantum anomaly scoring, dynamic threshold adjustments, 
+    and policy updates for Zero Trust and micro-segmentation.
     """
 
     @staticmethod
-    def detect_anomaly(qnn_arch, trained_unitaries, input_state: qt.Qobj, threshold: float) -> float:
+    def detect_anomaly(qnn_model, input_state: np.ndarray, threshold: float) -> float:
         """
         Pass input_state through the trained QNN and compute an anomaly score.
-        """
-        current_state = input_state
-        for l in range(1, len(qnn_arch)):
-            current_state = QNNArchitecture.make_layer_channel(qnn_arch, trained_unitaries, l, current_state)
 
-        # Make sure we have density matrices
-        if current_state.isket:
-            current_state = current_state.proj()
-        if input_state.isket:
-            input_state = input_state.proj()
+        :param qnn_model: Trained QNN model (discrete or continuous).
+        :param input_state: Classical input state as a NumPy array.
+        :param threshold: Current anomaly threshold for classification.
+        :return: Anomaly score (float).
+        """
+        logger.debug("detect_anomaly => Starting anomaly detection with threshold=%.4f", threshold)
 
         try:
-            fidelity = abs((current_state * input_state).tr().real)
-            trace_distance = 1 - abs(current_state.tr().real)
-            entropy = -abs(current_state.tr().real) * np.log(abs(current_state.tr().real) + 1e-10)
-            anomaly_score = trace_distance + (1 - fidelity) + entropy
+            # Forward pass through the QNN
+            anomaly_score = qnn_model.forward_pass(input_state)
+
+            # Ensure score is bounded
+            anomaly_score = max(0.0, min(1.0, anomaly_score))
+            logger.debug("detect_anomaly => Computed anomaly score: %.4f", anomaly_score)
         except Exception as e:
-            print(f"Error calculating anomaly score: {e}")
-            anomaly_score = 0.0  # Default to 0 if error occurs
-        return max(anomaly_score, 1e-6)
+            logger.error("Error during anomaly detection: %s", e, exc_info=True)
+            anomaly_score = 1.0  # Default to highly anomalous if error occurs
+
+        logger.info("detect_anomaly => Final anomaly score: %.6f (threshold=%.4f)", anomaly_score, threshold)
+        return anomaly_score
 
     @staticmethod
     def adjust_threshold(anomaly_scores: list, percentile: float = 80) -> float:
         """
-        Adjust threshold based on percentile of anomaly scores.
+        Adjust threshold based on a chosen percentile.
+
+        :param anomaly_scores: List of computed anomaly scores.
+        :param percentile: Percentile to calculate the new threshold.
+        :return: Adjusted threshold value.
         """
-        return np.percentile(anomaly_scores, percentile)
+        if not anomaly_scores:
+            logger.warning("adjust_threshold => No anomaly scores provided. Returning default threshold of 0.5.")
+            return 0.5
+        new_thresh = np.percentile(anomaly_scores, percentile)
+        logger.info("adjust_threshold => New threshold set to %.4f based on the %.2f percentile.", new_thresh, percentile)
+        return new_thresh
 
     @staticmethod
     def adjust_policy(current_policy: str, anomaly_score: float, threshold: float) -> str:
         """
-        Simple example of policy adjustment based on anomaly_score vs threshold.
+        Adjust access policy based on the anomaly score.
+
+        :param current_policy: Current policy state, e.g., "Default".
+        :param anomaly_score: Computed anomaly score.
+        :param threshold: Threshold above which the policy tightens.
+        :return: Updated policy state.
         """
+        logger.debug("adjust_policy => Current policy: %s, Anomaly Score: %.4f, Threshold: %.4f",
+                     current_policy, anomaly_score, threshold)
+
         if anomaly_score > threshold:
-            return "Restricted"
+            new_policy = "Restricted"
         elif anomaly_score > threshold / 2:
-            return "Monitored"
+            new_policy = "Monitored"
         elif anomaly_score > threshold / 4:
-            return "Inspected"
-        return "Open"
+            new_policy = "Inspected"
+        else:
+            new_policy = "Open"
+
+        logger.info("adjust_policy => Updated policy: %s", new_policy)
+        return new_policy
 
     @staticmethod
-    def simulate_traffic(qnn_arch, trained_unitaries, num_samples: int,
-                         anomaly_threshold: float, policy_threshold: float,
-                         noise_level: float = 0.2) -> None:
+    def simulate_traffic(qnn_model, num_samples: int, anomaly_threshold: float,
+                         policy_threshold: float, noise_level: float = 0.2) -> None:
         """
-        Example simulation over random input states with optional noise.
+        Simulate traffic using a QNN model and dynamically classify/analyze states.
+
+        :param qnn_model: Trained QNN model (discrete or continuous).
+        :param num_samples: Number of samples to simulate.
+        :param anomaly_threshold: Threshold for anomaly classification.
+        :param policy_threshold: Threshold for policy updates.
+        :param noise_level: Gaussian noise level added to inputs.
         """
-        for _ in range(num_samples):
-            input_state = QuantumUtils.random_qubit_state(qnn_arch[0])
+        logger.info("simulate_traffic => Simulating %d samples with thresholds: anomaly=%.4f, policy=%.4f",
+                    num_samples, anomaly_threshold, policy_threshold)
+
+        results = []
+        for i in range(num_samples):
+            # Generate a random input state
+            input_state = QuantumUtils.random_qubit_state(qnn_model.n_qubits) if hasattr(qnn_model, 'n_qubits') \
+                else np.random.rand(qnn_model.n_qumodes)
+
             if noise_level > 0.0:
-                input_state = QuantumUtils.noisy_state(input_state, noise_level)
-            anomaly_score = AnomalyDetection.detect_anomaly(
-                qnn_arch, trained_unitaries, input_state, anomaly_threshold
-            )
+                input_state += np.random.normal(scale=noise_level, size=input_state.shape)
+
+            # Detect anomaly
+            anomaly_score = AnomalyDetection.detect_anomaly(qnn_model, input_state, anomaly_threshold)
+
+            # Adjust policy based on anomaly score
             policy = AnomalyDetection.adjust_policy("Default", anomaly_score, policy_threshold)
-            print(f"Anomaly Score: {anomaly_score:.4f}, Policy: {policy}")
+            results.append((i + 1, anomaly_score, policy))
+
+            logger.info("simulate_traffic => Sample %d: Anomaly Score=%.4f, Policy=%s", i + 1, anomaly_score, policy)
+
+        # Print summary
+        for result in results:
+            print(f"Sample {result[0]}: Anomaly Score={result[1]:.4f}, Policy={result[2]}")

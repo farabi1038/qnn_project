@@ -1,0 +1,27 @@
+data:
+  csv_path: "data/ip_addresses_sample/agg_10_minutes/11.csv"
+  test_size: 0.2
+  random_state: 42
+
+quantum:
+  type: "continuous"  # Options: 'discrete' or 'continuous'
+  n_qubits: 4
+  n_layers: 3
+  n_qumodes: 3
+  cutoff_dim: 10
+
+qnn_architecture:
+  architecture: [3, 6, 3]  # Example: Input, hidden, and output layer sizes
+  num_training_pairs: 100  # Number of training pairs for the QNN
+
+training:
+  learning_rate: 0.01
+  epochs: 50
+
+anomaly:
+  threshold: 0.5
+  percentile: 95
+
+zero_trust:
+  risk_threshold: 0.5
+  segment_threshold: 0.2

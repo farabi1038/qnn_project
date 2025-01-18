@@ -1,18 +1,14 @@
-import logging
+from loguru import logger
 import os
 
-# Create a logs directory if it doesn't exist
+# Ensure the logs directory exists
 os.makedirs("logs", exist_ok=True)
 
-# Configure the logging
-logging.basicConfig(
-    level=logging.DEBUG,  # Set to DEBUG to capture detailed logs
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler("logs/qnn_project.log"),  # Log to a file
-        logging.StreamHandler()  # Log to the console
-    ]
+# Configure Loguru
+logger.add(
+    "logs/system.log",  # Log file location
+    rotation="500 MB",  # Rotate logs when the file reaches 500 MB
+    retention="10 days",  # Keep logs for 10 days
+    level="DEBUG",  # Minimum logging level
+    format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}"
 )
-
-# Create a logger instance for the project
-logger = logging.getLogger("qnn_project")

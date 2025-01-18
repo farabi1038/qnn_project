@@ -1,145 +1,99 @@
-# qnn_project/main.py
-
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-
-from data_preprocessing import DataPreprocessing
-from quantum_utils import QuantumUtils
-from qnn_architecture import QNNArchitecture
-from anomaly_detection import AnomalyDetection
-
+import os
+import yaml
 from logger import logger
+from data_preprocessing import load_cesnet_data
+from anomaly_detection import AnomalyDetection
+from qnn_architecture import QNNArchitecture
+from continuous_qnn import ContinuousVariableQNN
+from discrete_qnn import DiscreteVariableQNN
+from micro_segmentation import MicroSegmentation
+from zero_trust_framework import ZeroTrustFramework
 
+def load_config(config_path="config.yml"):
+    """
+    Load configuration from a YAML file.
+    """
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Configuration file not found: {config_path}")
+
+    with open(config_path, "r") as file:
+        config = yaml.safe_load(file)
+    return config
 
 def main():
-    logger.info("=== Starting QNN Project Main Driver ===")
+    logger.info("Starting Quantum Anomaly Detection Pipeline")
 
-    try:
-        # Example usage: Loading CESNET data
-        data_path = "data/ip_addresses_sample/agg_10_minutes/11.csv"
-        logger.info("Loading CESNET dataset from %s...", data_path)
-        normalized_data, raw_df = DataPreprocessing.load_cesnet_data(data_path, num_samples=5)
-        logger.info("CESNET dataset loaded successfully with %d samples.", len(normalized_data))
+    # Load configuration
+    config = load_config()
 
-        # Convert data to quantum states
-        logger.info("Encoding traffic data into quantum states...")
-        quantum_states = DataPreprocessing.encode_traffic_to_quantum(normalized_data)
-        logger.info("Encoded traffic data into %d quantum states.", len(quantum_states))
+    # Load and preprocess data
+    X_train, X_test, y_train, y_test = load_cesnet_data(
+        config["data"]["csv_path"],
+        test_size=config["data"]["test_size"],
+        random_state=config["data"]["random_state"]
+    )
+    logger.info("Data successfully loaded and preprocessed.")
 
-        # Build training data with noisy targets
-        logger.info("Preparing training data with noise level 0.1...")
-        training_data = DataPreprocessing.prepare_training_data(quantum_states, noise_level=0.1)
-        logger.info("Prepared training data with %d samples.", len(training_data))
-
-        # Number of qubits needed (based on number of features)
-        num_features = normalized_data.shape[1]
-        num_qubits = int(np.ceil(np.log2(num_features)))
-        logger.info("Calculated number of qubits needed: %d.", num_qubits)
-
-        # Example network architectures
-        networks = [
-            ([num_qubits, num_qubits * 2, num_qubits], len(training_data) // 2),
-            ([num_qubits, num_qubits + 1, num_qubits], len(training_data) // 2),
-            ([num_qubits, num_qubits], len(training_data) // 2),
-        ]
-        logger.info("Defined network architectures: %s", networks)
-
-        simulation_results = []
-
-        # Train & Test each network
-        for arch, num_pairs in networks:
-            logger.info("Training network %s with %d training pairs...", arch, num_pairs)
-            qnn_tuple = QNNArchitecture.random_network(arch, num_pairs)
-            trained_unitaries = QNNArchitecture.qnn_training(
-                qnn_tuple[0],  # qnn_arch
-                qnn_tuple[1],  # unitaries
-                training_data[:num_pairs],
-                lda=1, ep=0.1, training_rounds=100
-            )[1]
-            logger.info("Training completed for network %s.", arch)
-
-            logger.info("Testing network %s with remaining data...", arch)
-            test_data = training_data[num_pairs:]
-            anomaly_scores = []
-            for test_state, _ in test_data:
-                current_state = test_state
-                for l in range(1, len(arch)):
-                    current_state = QNNArchitecture.make_layer_channel(arch, trained_unitaries, l, current_state)
-                try:
-                    anomaly_score = 1 - abs(current_state.tr().real)
-                    if np.isnan(anomaly_score):
-                        anomaly_score = 0.0
-                except Exception as e:
-                    logger.error("Error calculating anomaly score: %s", e)
-                    anomaly_score = 0.0
-                anomaly_scores.append(anomaly_score)
-
-            # Threshold: 95th percentile
-            threshold = np.percentile(anomaly_scores, 95)
-            logger.info("Threshold for anomaly detection set at 95th percentile: %.4f.", threshold)
-
-            logger.info("Analyzing test results for network %s...", arch)
-            for i, score in enumerate(anomaly_scores[:20]):
-                policy = "Restricted" if score > threshold else "Open"
-                logger.info("Sample %d - Anomaly Score: %.4f, Policy: %s", i + 1, score, policy)
-
-            # Plot distribution of anomaly scores if valid
-            if any(not np.isnan(s) for s in anomaly_scores):
-                plt.figure(figsize=(10, 6))
-                plt.hist(anomaly_scores, bins=20, alpha=0.7)
-                plt.title(f"Anomaly Score Distribution for Network {arch}")
-                plt.xlabel("Anomaly Score")
-                plt.ylabel("Frequency")
-                plt.show()
-
-        # Additional network and traffic simulation example
-        logger.info("Simulating traffic for additional networks...")
-        network121 = QNNArchitecture.random_network([1, 2, 1], 10)
-        trained_unitaries = QNNArchitecture.qnn_training(
-            network121[0], network121[1], network121[2],
-            lda=1, ep=0.1, training_rounds=500
-        )[1]
-
-        AnomalyDetection.simulate_traffic(
-            network121[0], trained_unitaries,
-            num_samples=20, anomaly_threshold=0.5, policy_threshold=0.7, noise_level=0.2
+    # Initialize the appropriate QNN model
+    if config["quantum"]["type"] == "discrete":
+        qnn_model = DiscreteVariableQNN(
+            n_qubits=config["quantum"]["n_qubits"],
+            n_layers=config["quantum"]["n_layers"]
         )
+    else:
+        qnn_model = ContinuousVariableQNN(
+            n_qumodes=config["quantum"]["n_qumodes"],
+            n_layers=config["quantum"]["n_layers"],
+            cutoff_dim=config["quantum"]["cutoff_dim"]
+        )
+    logger.info(f"Initialized {config['quantum']['type']} QNN model.")
 
-        logger.info("Simulating extended network architectures...")
-        networks_extended = [
-            ([3, 6, 3], 10),
-            ([3, 4, 3], 10),
-            ([3, 3], 10),
-        ]
+    # Create random QNN architecture and training data
+    qnn_arch = config["qnn_architecture"]["architecture"]
+    num_training_pairs = config["qnn_architecture"]["num_training_pairs"]
 
-        for arch, num_pairs in networks_extended:
-            logger.info("Simulating for network %s with %d training pairs...", arch, num_pairs)
-            net = QNNArchitecture.random_network(arch, num_pairs)
-            trained_uni = QNNArchitecture.qnn_training(
-                net[0], net[1], net[2], 1, 0.1, 200
-            )[1]
+    logger.info("Creating random QNN network and training data...")
+    _, unitaries, training_data, _ = QNNArchitecture.random_network(qnn_arch, num_training_pairs)
 
-            for sample_id in range(1, 21):
-                input_state = QuantumUtils.random_qubit_state(arch[0])
-                input_state = QuantumUtils.noisy_state(input_state, noise_level=0.2)
-                anomaly_score = AnomalyDetection.detect_anomaly(arch, trained_uni, input_state, threshold=0.5)
-                policy = AnomalyDetection.adjust_policy("Default", anomaly_score, 0.7)
+    # Train QNN model
+    logger.info("Starting QNN training...")
+    trained_unitaries = QNNArchitecture.qnn_training(
+        qnn_arch=qnn_arch,
+        unitaries=unitaries,
+        training_data=training_data,
+        learning_rate=config["training"]["learning_rate"],
+        epochs=config["training"]["epochs"]
+    )
+    logger.info("QNN training completed.")
 
-                logger.info("Sample %d - Anomaly Score: %.4f, Policy: %s", sample_id, anomaly_score, policy)
-                simulation_results.append([sample_id, str(arch), anomaly_score, policy])
+    # Detect anomalies using the trained QNN
+    logger.info("Detecting anomalies on test data...")
+    anomaly_scores = [
+        AnomalyDetection.detect_anomaly(qnn_model, x, config["anomaly"]["threshold"])
+        for x in X_test
+    ]
 
-        # Save simulation results
-        simulation_df = pd.DataFrame(simulation_results,
-                                     columns=["Sample", "Network Architecture", "Anomaly Score", "Policy"])
-        simulation_df.to_csv("data/output/simulation_results.csv", index=False)
-        logger.info("Simulation results saved to simulation_results.csv")
+    # Optimize threshold
+    best_threshold = AnomalyDetection.adjust_threshold(anomaly_scores, config["anomaly"]["percentile"])
+    logger.info(f"Optimized anomaly detection threshold: {best_threshold:.4f}")
 
-    except Exception as e:
-        logger.critical("A critical error occurred: %s", e, exc_info=True)
+    # Micro-segmentation
+    micro_segmentation = MicroSegmentation(segment_threshold=config["zero_trust"]["segment_threshold"])
+    segment_predictions = [1 if score > best_threshold else 0 for score in anomaly_scores]
+    isolated_segments = micro_segmentation.isolate_segments(X_test, segment_predictions)
+    logger.info(f"Segments flagged for isolation: {isolated_segments}")
 
+    # Zero Trust Framework
+    zt_framework = ZeroTrustFramework(risk_threshold=config["zero_trust"]["risk_threshold"])
 
-# If you want to run this script directly:
+    for i, (x_sample, score) in enumerate(zip(X_test, anomaly_scores)):
+        user_ctx = {"role": "user"}
+        device_ctx = {"location": "local"}
+        risk_score = zt_framework.compute_risk_score(user_ctx, device_ctx, score)
+        access_decision = zt_framework.decide_access(risk_score)
+        logger.info(f"Sample {i + 1}: Risk Score={risk_score:.4f}, Access={'Granted' if access_decision else 'Denied'}")
+
+    logger.info("Pipeline execution completed.")
+
 if __name__ == "__main__":
     main()
