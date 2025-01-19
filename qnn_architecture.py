@@ -1,5 +1,6 @@
 import numpy as np
 import qutip as qt
+import torch  # Add PyTorch for GPU support
 from copy import deepcopy
 from quantum_utils import QuantumUtils
 from logger import logger
@@ -13,6 +14,19 @@ class QNNArchitecture:
     - Cost function & training (Sec. IV)
     - Quantum anomaly detection & thresholding (Sec. IV–V)
     """
+    def __init__(self):
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        logger.info(f"Using device: {self.device}")
+
+    @staticmethod
+    def _to_torch(qobj):
+        """Helper to convert QuTiP to PyTorch tensor"""
+        return torch.tensor(qobj.full(), dtype=torch.complex64)
+
+    @staticmethod
+    def _to_qutip(tensor):
+        """Helper to convert PyTorch tensor to QuTiP"""
+        return qt.Qobj(tensor.cpu().numpy())
 
     @staticmethod
     def random_network(qnn_arch: list, num_training_pairs: int):
@@ -23,6 +37,7 @@ class QNNArchitecture:
         Returns:
             tuple: (qnn_arch, unitaries, training_data, exact_unitary)
         """
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         assert qnn_arch[0] == qnn_arch[-1], "Architecture must start and end with the same number of qubits."
 
         # Generate the exact unitary for training data
@@ -44,7 +59,9 @@ class QNNArchitecture:
                         QuantumUtils.tensored_id(num_output_qubits - 1)
                     )
                 unitary = QuantumUtils.swapped_op(unitary, num_input_qubits, num_input_qubits + j)
-                network_unitaries[l].append(unitary)
+                # Convert to PyTorch tensor for GPU support
+                unitary_tensor = QNNArchitecture._to_torch(unitary).to(device)
+                network_unitaries[l].append(unitary_tensor)
 
         logger.info("Random QNN network built with architecture: %s, Training Pairs: %d",
                     qnn_arch, num_training_pairs)
@@ -62,13 +79,16 @@ class QNNArchitecture:
         Returns:
             list: [(|input_state>, |output_state>), ...]
         """
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         num_qubits = len(unitary.dims[0])
         training_data = []
+        unitary_tensor = QNNArchitecture._to_torch(unitary).to(device)
 
         for _ in range(num_samples):
             input_state = QuantumUtils.random_qubit_state(num_qubits)
-            output_state = unitary * input_state
-            training_data.append([input_state, output_state])
+            input_tensor = QNNArchitecture._to_torch(input_state).to(device)
+            output_tensor = torch.matmul(unitary_tensor, input_tensor)
+            training_data.append([input_tensor, output_tensor])
 
         logger.debug("Generated %d training pairs.", num_samples)
         return training_data
@@ -82,48 +102,53 @@ class QNNArchitecture:
         """
         output_states = []
         for x, sample in enumerate(training_data):
-            current_state = sample[0] * sample[0].dag()  # Convert ket -> density matrix
+            # Convert ket to density matrix using GPU operations
+            current_state = torch.matmul(sample[0], sample[0].conj().T)
             
             # Process through each layer
             for l in range(1, len(qnn_arch)):
                 current_state = QNNArchitecture.make_layer_channel(
                     qnn_arch, unitaries, l, current_state
                 )
-                if not isinstance(current_state, qt.Qobj):
-                    logger.error(f"feedforward: Layer {l}, Sample {x} - State is not Qobj.")
-                    current_state = qt.Qobj(current_state)
             
-            # Append only the final output state
             output_states.append(current_state)
         
         logger.debug("Feedforward pass completed for %d samples.", len(training_data))
         return output_states
 
     @staticmethod
-    def make_layer_channel(qnn_arch: list, unitaries: list, l: int, input_state: qt.Qobj) -> qt.Qobj:
+    def make_layer_channel(qnn_arch: list, unitaries: list, l: int, input_state: torch.Tensor) -> torch.Tensor:
         """
-        Single layer channel (Sec. III.B):
+        Single layer channel (Sec. III.B) with GPU support:
         1. Tensor input with |0> states for new qubits.
         2. Apply the unitaries.
         3. Partial trace out the input qubits => output qubits only.
         """
+        device = input_state.device
         num_input_qubits = qnn_arch[l - 1]
         num_output_qubits = qnn_arch[l]
 
-        if input_state.type == 'ket':
-            input_state = input_state * input_state.dag()
+        # Create zero state tensor on GPU
+        zero_state = torch.zeros((2**num_output_qubits, 1), dtype=torch.complex64, device=device)
+        zero_state[0] = 1.0
 
-        state = qt.tensor(input_state, QuantumUtils.tensored_qubit0(num_output_qubits))
-        layer_uni = unitaries[l][0].copy()
+        state = torch.kron(input_state, torch.matmul(zero_state, zero_state.conj().T))
+        
+        # Apply unitaries
+        layer_uni = unitaries[l][0]
         for i in range(1, num_output_qubits):
-            layer_uni = unitaries[l][i] * layer_uni
+            layer_uni = torch.matmul(unitaries[l][i], layer_uni)
 
-        result = layer_uni * state * layer_uni.dag()
-        traced_result = result.ptrace(list(range(num_input_qubits, num_input_qubits + num_output_qubits)))
-
-        if not isinstance(traced_result, qt.Qobj):
-            logger.warning(f"make_layer_channel: Layer {l} - Traced result is not Qobj.")
-            traced_result = qt.Qobj(traced_result)
+        result = torch.matmul(torch.matmul(layer_uni, state), layer_uni.conj().T)
+        
+        # Partial trace implementation for GPU tensors
+        traced_dims = [2] * (num_input_qubits + num_output_qubits)
+        reshaped_tensor = result.reshape(traced_dims + traced_dims)
+        traced_result = torch.trace(reshaped_tensor.permute(
+            list(range(num_input_qubits, num_input_qubits + num_output_qubits)) +
+            list(range(num_input_qubits + num_output_qubits + num_input_qubits,
+                      num_input_qubits + num_output_qubits + num_input_qubits + num_output_qubits))
+        ))
 
         return traced_result
 
@@ -131,32 +156,19 @@ class QNNArchitecture:
     def cost_function(training_data: list, output_states: list) -> float:
         """
         Compute the average cost based on fidelity with target states.
-        Args:
-            training_data: List of [input_state, target_state] pairs
-            output_states: List of predicted output states (Qobj)
-        Returns:
-            float: Average cost
         """
         cost_sum = 0.0
         valid_samples = 0
 
         for i, (sample, predicted_state) in enumerate(zip(training_data, output_states)):
-            target_state = sample[1]
+            target_state = torch.matmul(sample[1], sample[1].conj().T)
             
-            # Ensure both states are density matrices
-            if target_state.type == 'ket':
-                target_state = target_state * target_state.dag()
-            if predicted_state.type == 'ket':
-                predicted_state = predicted_state * predicted_state.dag()
-
-            if not isinstance(target_state, qt.Qobj) or not isinstance(predicted_state, qt.Qobj):
-                logger.error(f"Sample {i}: Invalid types - target={type(target_state)}, predicted={type(predicted_state)}")
-                continue
-
             try:
-                # Calculate fidelity between density matrices
-                fidelity = qt.fidelity(target_state, predicted_state)
-                cost_sum += 1 - fidelity
+                # Calculate fidelity between density matrices using GPU operations
+                sqrt_pred = torch.matrix_power(predicted_state, 0.5)
+                fidelity = torch.abs(torch.trace(torch.matmul(sqrt_pred,
+                                   torch.matmul(target_state, sqrt_pred))))
+                cost_sum += 1 - fidelity.item()
                 valid_samples += 1
             except Exception as e:
                 logger.error(f"Error in fidelity calculation for sample {i}: {e}")
@@ -164,27 +176,40 @@ class QNNArchitecture:
         avg_cost = cost_sum / valid_samples if valid_samples > 0 else float('inf')
         logger.info(f"Average cost computed: {avg_cost:.4f}")
         return avg_cost
+
     @staticmethod
     def qnn_training(qnn_arch: list, unitaries: list, training_data: list,
                      learning_rate: float, epochs: int):
         """
-        Train the QNN using gradient-based updates.
+        Train the QNN using gradient-based updates with GPU acceleration.
         """
         logger.info("Starting QNN training for %d epochs.", epochs)
         best_cost = float('inf')
         best_unitaries = None
+        device = training_data[0][0].device
+
+        # Convert unitaries to PyTorch parameters for gradient computation
+        trainable_unitaries = [[torch.nn.Parameter(u.clone()) for u in layer] for layer in unitaries[1:]]
+        optimizer = torch.optim.Adam(sum([list(layer) for layer in trainable_unitaries], []), lr=learning_rate)
 
         for epoch in range(epochs):
+            optimizer.zero_grad()
+            
             # Forward pass
-            output_states = QNNArchitecture.feedforward(qnn_arch, unitaries, training_data)
+            output_states = QNNArchitecture.feedforward(qnn_arch, [[], *trainable_unitaries], training_data)
             
             # Calculate cost
             current_cost = QNNArchitecture.cost_function(training_data, output_states)
             
+            # Backward pass
+            loss = torch.tensor(current_cost, requires_grad=True, device=device)
+            loss.backward()
+            optimizer.step()
+            
             # Update best model if needed
             if current_cost < best_cost:
                 best_cost = current_cost
-                best_unitaries = deepcopy(unitaries)
+                best_unitaries = deepcopy([[u.detach() for u in layer] for layer in trainable_unitaries])
             
             logger.info("Epoch %d/%d: Cost=%.6f", epoch + 1, epochs, current_cost)
             
@@ -192,4 +217,4 @@ class QNNArchitecture:
                 logger.info("Training converged early at epoch %d", epoch + 1)
                 break
 
-        return best_unitaries or unitaries
+        return [[], *best_unitaries] if best_unitaries else [[], *trainable_unitaries]

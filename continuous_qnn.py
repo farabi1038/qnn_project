@@ -1,102 +1,165 @@
+import torch
 import pennylane as qml
-import strawberryfields as sf
+import numpy as np
+import cupy as cp
+import qutip as qt
+from typing import Optional, Union, Tuple
+from torch.utils.data import DataLoader, TensorDataset
 from strawberryfields.ops import Dgate, Rgate, Sgate, BSgate
 from logger import logger
 
 
 class ContinuousVariableQNN:
     """
-    Continuous Variable (CV) Quantum Neural Network using Strawberry Fields
-    and PennyLane.
+    GPU-accelerated Continuous Variable QNN using PyTorch, PennyLane, and CuPy.
     """
-
-    def __init__(self, n_qumodes: int, n_layers: int, cutoff_dim: int = 10):
+    
+    def __init__(self, n_qubits=None, n_qumodes=None, n_layers=2, cutoff_dim: int = 10, 
+                 device: str = 'cuda' if torch.cuda.is_available() else 'cpu'):
         """
-        Initialize the CV QNN model.
-
-        :param n_qumodes: Number of qumodes (features).
-        :param n_layers: Number of layers in the variational circuit.
-        :param cutoff_dim: Cutoff dimension for Fock space.
+        Initialize the CV QNN model with GPU support.
         """
-        self.n_qumodes = n_qumodes
+        logger.info(f"Using device: {torch.cuda.is_available()}")
+        # Handle both n_qubits and n_qumodes parameters
+        if n_qubits is not None and n_qumodes is not None:
+            raise ValueError("Please provide either n_qubits or n_qumodes, not both")
+        
+        self.n_qumodes = n_qumodes if n_qumodes is not None else n_qubits
+        if self.n_qumodes is None:
+            raise ValueError("Must provide either n_qubits or n_qumodes")
+
         self.n_layers = n_layers
         self.cutoff_dim = cutoff_dim
-
-        # Use a PennyLane device wrapping Strawberry Fields
-        self.dev = qml.device("strawberryfields.fock", wires=n_qumodes, cutoff_dim=cutoff_dim)
+        self.device = device
+        logger.info(f"Using device from self: {self.device}")
         
+        # Use GPU-enabled device if available
+        try:
+            if self.device == 'cuda':
+                self.dev = qml.device('lightning.gpu', wires=self.n_qumodes)
+                logger.info("Using GPU-accelerated PennyLane device")
+            else:
+                self.dev = qml.device("strawberryfields.fock", wires=self.n_qumodes, cutoff_dim=self.cutoff_dim)
+                logger.info(f"Using Strawberry Fields Fock device with cutoff_dim={self.cutoff_dim}")
 
-        # Initialize parameters: Random initialization for the circuit
-        self.params = self.initialize_parameters()
+        except Exception as e:
+            logger.warning(f"Failed to initialize preferred device: {e}")
+            logger.info("Falling back to default.gaussian device")
+            self.dev = qml.device("default.gaussian", wires=self.n_qumodes)
 
-    def initialize_parameters(self):
-        """
-        Randomly initialize the parameters for the variational circuit.
+        # Initialize parameters on GPU if available
+        self.params = torch.nn.Parameter(
+            torch.randn(self.n_layers, 3 * self.n_qumodes, 
+                       device=self.device, requires_grad=True)
+        )
+        
+        # Create the quantum circuit with proper decoration
+        self.circuit = qml.QNode(self.circuit_def, self.dev)
+        
+    def to_device(self, data: Union[np.ndarray, torch.Tensor]) -> torch.Tensor:
+        """Convert input data to torch tensor on correct device."""
+        if isinstance(data, np.ndarray):
+            data = torch.from_numpy(data)
+        return data.to(self.device)
 
-        :return: NumPy array of trainable parameters.
-        """
-        import numpy as np
-        np.random.seed(42)
-        return np.random.uniform(-0.1, 0.1, size=(self.n_layers, 3 * self.n_qumodes))
-
-    def circuit(self, inputs, parameters):
-        """
-        Define the CV quantum circuit using PennyLane.
-
-        :param inputs: Input features (classical data).
-        :param parameters: Trainable parameters for the circuit.
-        """
-        # Encode the classical inputs using displacement gates
+    def circuit_def(self, inputs, parameters):
+        """Define the CV quantum circuit using PennyLane."""
+        # Convert inputs to GPU tensor if needed
+        inputs = self.to_device(inputs)
+        
+        # Encode inputs
         for i in range(self.n_qumodes):
-            qml.Displacement(inputs[i], 0.0, wires=i)
+            qml.Displacement(inputs[i].item(), 0.0, wires=i)
 
         # Apply variational layers
         for l in range(self.n_layers):
             for i in range(self.n_qumodes):
-                r1, s, r2 = parameters[l, 3 * i:3 * (i + 1)]
-                qml.Rotation(r1, wires=i)
-                qml.Squeeze(s, 0.0, wires=i)
-                qml.Rotation(r2, wires=i)
+                params = parameters[l, 3*i:3*(i+1)]
+                qml.Rotation(params[0].item(), wires=i)
+                qml.Squeezing(params[1].item(), 0.0, wires=i)
+                qml.Rotation(params[2].item(), wires=i)
 
-            # Apply entangling gates (e.g., beam splitters)
+            # Entangling operations
             for i in range(self.n_qumodes - 1):
-                qml.Beamsplitter(0.5, 0.0, wires=[i, i + 1])
+                qml.Beamsplitter(np.pi/4, 0.0, wires=[i, i + 1])
 
-    def forward_pass(self, inputs):
+        # Return expectations for all modes
+        return [qml.expval(qml.NumberOperator(i)) for i in range(self.n_qumodes)]
+
+    def forward_pass(self, X: Union[np.ndarray, torch.Tensor]) -> Tuple[list, torch.Tensor]:
         """
-        Perform a forward pass to compute the anomaly score.
-
-        :param inputs: Input data (1D array of length `n_qumodes`).
-        :return: Anomaly score (float).
+        Perform forward pass through the quantum circuit.
+        
+        Args:
+            X: Input data
+            
+        Returns:
+            tuple: (costs, output_states)
+                - costs: List of costs for each input
+                - output_states: Tensor of output states
         """
-        @qml.qnode(self.dev)
-        def qnn(inputs, parameters):
-            self.circuit(inputs, parameters)
-            return qml.expval(qml.NumberOperator(0))
+        # Convert input to tensor if needed
+        X = self.to_device(X)
+        
+        # Calculate outputs
+        costs = []
+        outputs = []
+        
+        with torch.no_grad():
+            for x in X:
+                # Forward pass through circuit
+                output = torch.tensor(self.circuit(x, self.params), 
+                                    device=self.device)
+                outputs.append(output)
+                
+                # Calculate cost (using L2 norm as example cost function)
+                cost = torch.norm(output).item()
+                costs.append(cost)
+        
+        output_states = torch.stack(outputs)
+        
+        return costs, output_states
 
-        score = qnn(inputs, self.params)
-        return 1 - score  # Map score to an anomaly likelihood [0, 1]
-
-    def train(self, X_train, y_train, max_steps=50, learning_rate=0.01):
-        """
-        Train the QNN using a gradient descent optimizer.
-
-        :param X_train: Training features.
-        :param y_train: Training labels.
-        :param max_steps: Number of training iterations.
-        :param learning_rate: Learning rate for optimization.
-        """
-        opt = qml.GradientDescentOptimizer(stepsize=learning_rate)
-
-        def cost_fn(parameters, X, y):
-            loss = 0
-            for xi, yi in zip(X, y):
-                prediction = self.forward_pass(xi)
-                loss += (prediction - yi) ** 2
-            return loss / len(X)
-
-        for step in range(max_steps):
-            self.params = opt.step(lambda p: cost_fn(p, X_train, y_train), self.params)
-            if step % 5 == 0:
-                current_loss = cost_fn(self.params, X_train, y_train)
-                logger.info(f"Step {step}: Loss = {current_loss:.4f}")
+    def train(self, X_train, y_train, batch_size=32, epochs=50, 
+              learning_rate=0.01):
+        """GPU-accelerated training using PyTorch."""
+        # Convert data to PyTorch tensors
+        X_train = self.to_device(X_train)
+        y_train = self.to_device(y_train)
+        
+        # Create data loader for batching
+        dataset = TensorDataset(X_train, y_train)
+        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+        
+        # Initialize optimizer
+        optimizer = torch.optim.Adam([self.params], lr=learning_rate)
+        
+        training_costs = []
+        for epoch in range(epochs):
+            total_loss = 0
+            for batch_X, batch_y in dataloader:
+                optimizer.zero_grad()
+                
+                # Forward pass
+                predictions = torch.stack([
+                    torch.tensor(self.circuit(x, self.params), 
+                               device=self.device)
+                    for x in batch_X
+                ])
+                
+                # Compute loss
+                loss = torch.nn.functional.mse_loss(predictions, batch_y)
+                
+                # Backward pass
+                loss.backward()
+                optimizer.step()
+                
+                total_loss += loss.item()
+            
+            avg_loss = total_loss/len(dataloader)
+            training_costs.append(avg_loss)
+            
+            if epoch % 5 == 0:
+                logger.info(f"Epoch {epoch}: Loss = {avg_loss:.4f}")
+        
+        return training_costs
