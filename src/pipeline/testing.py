@@ -76,7 +76,7 @@ class TestingManager:
             
             # Create synthetic data
             X_train, X_test, y_train, y_test = self.create_test_data(
-                num_samples=1000,
+                num_samples=100,
                 num_features=13
             )
             logger.debug(f"Created synthetic data - Train shape: {X_train.shape}, Test shape: {X_test.shape}")

@@ -42,6 +42,9 @@ class GPUPipeline:
             
             self.training_state = TrainingState()
             self.plotting = PlottingManager()
+            self.execution_mode = self.config.get('execution_mode', 'test')
+            logger.info(f"GPU Pipeline initialized with device: {self.device}")
+            logger.info(f"Execution mode: {self.execution_mode}")
             
         except Exception as e:
             logger.error(f"Error initializing pipeline: {str(e)}")
@@ -62,7 +65,11 @@ class GPUPipeline:
         """Load configuration from YAML file."""
         try:
             with open(config_path, 'r') as f:
-                return yaml.safe_load(f)
+                config = yaml.safe_load(f)
+                # Set default execution mode if not specified
+                if 'execution_mode' not in config:
+                    config['execution_mode'] = 'test'
+                return config
         except Exception as e:
             logger.error(f"Error loading config: {str(e)}")
             raise
@@ -348,4 +355,16 @@ class GPUPipeline:
             
         except Exception as e:
             logger.error(f"Error saving results: {str(e)}")
-            raise 
+            raise
+
+    def get_execution_mode(self) -> str:
+        """Get the current execution mode."""
+        return self.execution_mode
+
+    def set_execution_mode(self, mode: str) -> None:
+        """Set the execution mode."""
+        valid_modes = ['train', 'test', 'evaluate']
+        if mode not in valid_modes:
+            raise ValueError(f"Invalid mode. Must be one of {valid_modes}")
+        self.execution_mode = mode
+        logger.info(f"Execution mode set to: {mode}") 
