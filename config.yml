@@ -25,3 +25,14 @@ anomaly:
 zero_trust:
   risk_threshold: 0.5
   segment_threshold: 0.2
+
+training:
+  learning_rate: 0.01
+  epochs: 50
+  resume_training: false  # Set to true to resume from checkpoint
+  checkpoint_interval: 10  # Save checkpoint every N epochs
+  early_stopping_patience: 5  # Number of epochs to wait before early stopping
+  min_delta: 0.001  # Minimum change in loss to qualify as an improvement
+
+visualization:
+  plot_interval: 10  # Plot every N epochs
