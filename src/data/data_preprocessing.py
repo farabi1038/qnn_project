@@ -2,17 +2,21 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from logger import logger
+from src.utils import setup_logger
 
+logger = setup_logger()
 
 def load_cesnet_data(csv_path: str, test_size: float = 0.2, random_state: int = 42):
     """
     Loads and preprocesses CESNET data for anomaly detection.
     
-    :param csv_path: Path to the CSV file containing the dataset.
-    :param test_size: Fraction of the data to use for testing.
-    :param random_state: Seed for reproducibility in train-test split.
-    :return: Tuple of (X_train, X_test, y_train, y_test).
+    Args:
+        csv_path: Path to the CSV file containing the dataset.
+        test_size: Fraction of the data to use for testing.
+        random_state: Seed for reproducibility in train-test split.
+    
+    Returns:
+        Tuple of (X_train, X_test, y_train, y_test).
     """
     try:
         logger.info(f"Loading data from {csv_path}")
@@ -61,3 +65,15 @@ def load_cesnet_data(csv_path: str, test_size: float = 0.2, random_state: int = 
     logger.info(f"Data split complete: Train size = {len(X_train)}, Test size = {len(X_test)}")
 
     return X_train, X_test, y_train, y_test
+
+def normalize_features(data: pd.DataFrame) -> pd.DataFrame:
+    """Normalize numerical features to [0,1] range."""
+    numeric_cols = data.select_dtypes(include=[np.number]).columns
+    result = data.copy()
+    for col in numeric_cols:
+        min_val = data[col].min()
+        max_val = data[col].max()
+        result[col] = (data[col] - min_val) / (max_val - min_val + 1e-8)
+    return result
+
+# ... any other data preprocessing functions ...

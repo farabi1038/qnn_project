@@ -1,3 +1,11 @@
+from typing import List, Dict
+import numpy as np
+
+from ..utils import setup_logger
+from .anomaly_detection import AnomalyDetector
+
+logger = setup_logger()
+
 class MicroSegmentation:
     """
     Dynamically isolates segments (flows) deemed high-risk based on anomaly scores.

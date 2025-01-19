@@ -1,15 +1,25 @@
+import torch
+from typing import Dict, List
+
+from src.utils import setup_logger
+from src.models import ContinuousVariableQNN, DiscreteVariableQNN, QNNArchitecture
+from src.utils.quantum_utils import QuantumUtils
+
+logger = setup_logger()
+
 import numpy as np
 import qutip as qt
-from quantum_utils import QuantumUtils
-from qnn_architecture import QNNArchitecture
-from logger import logger
 
-class AnomalyDetection:
-    """
-    A class for anomaly detection functionalities, 
-    integrating quantum anomaly scoring, dynamic threshold adjustments, 
-    and policy updates for Zero Trust and micro-segmentation.
-    """
+class AnomalyDetector:
+    """Quantum-based anomaly detection system."""
+    
+    def __init__(self, model_type: str = 'continuous'):
+        self.quantum_utils = QuantumUtils()
+        if model_type == 'continuous':
+            self.model = ContinuousVariableQNN()
+        else:
+            self.model = DiscreteVariableQNN()
+        logger.info(f"Initialized AnomalyDetector with {model_type} model")
 
     @staticmethod
     def detect_anomaly(qnn_model, input_state: np.ndarray, threshold: float) -> float:
@@ -103,10 +113,10 @@ class AnomalyDetection:
                 input_state += np.random.normal(scale=noise_level, size=input_state.shape)
 
             # Detect anomaly
-            anomaly_score = AnomalyDetection.detect_anomaly(qnn_model, input_state, anomaly_threshold)
+            anomaly_score = AnomalyDetector.detect_anomaly(qnn_model, input_state, anomaly_threshold)
 
             # Adjust policy based on anomaly score
-            policy = AnomalyDetection.adjust_policy("Default", anomaly_score, policy_threshold)
+            policy = AnomalyDetector.adjust_policy("Default", anomaly_score, policy_threshold)
             results.append((i + 1, anomaly_score, policy))
 
             logger.info("simulate_traffic => Sample %d: Anomaly Score=%.4f, Policy=%s", i + 1, anomaly_score, policy)

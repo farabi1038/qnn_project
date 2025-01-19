@@ -4,19 +4,24 @@ data:
   random_state: 42
 
 quantum:
-  type: "continuous"  # Options: 'discrete' or 'continuous'
-  n_qubits: 4
-  n_layers: 3
-  n_qumodes: 3
-  cutoff_dim: 10
+  type: "discrete"  # or "continuous"
+  n_qubits: 4      # for discrete QNN
+  n_layers: 2
+  n_qumodes: 4     # for continuous QNN
+  cutoff_dim: 10   # for continuous QNN
 
 qnn_architecture:
   architecture: [3, 6, 3]  # Example: Input, hidden, and output layer sizes
-  num_training_pairs: 100  # Number of training pairs for the QNN
 
 training:
-  learning_rate: 0.01
-  epochs: 50
+  batch_size: 128  # Adjusted for larger dataset
+  epochs: 30
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  min_delta: 0.001
+  log_interval: 5
+  resume_training: false  # Set to true to resume from checkpoint
+  checkpoint_interval: 10  # Save checkpoint every N epochs
 
 anomaly:
   threshold: 0.5
@@ -25,14 +30,6 @@ anomaly:
 zero_trust:
   risk_threshold: 0.5
   segment_threshold: 0.2
-
-training:
-  learning_rate: 0.01
-  epochs: 50
-  resume_training: false  # Set to true to resume from checkpoint
-  checkpoint_interval: 10  # Save checkpoint every N epochs
-  early_stopping_patience: 5  # Number of epochs to wait before early stopping
-  min_delta: 0.001  # Minimum change in loss to qualify as an improvement
 
 visualization:
   plot_interval: 10  # Plot every N epochs

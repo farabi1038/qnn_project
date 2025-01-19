@@ -1,22 +1,74 @@
-import numpy as np
-import qutip as qt
-import torch  # Add PyTorch for GPU support
+import torch
+import torch.nn as nn
+from typing import List, Tuple, Optional
 from copy import deepcopy
-from quantum_utils import QuantumUtils
-from logger import logger
 
+from src.utils import setup_logger
+from src.utils.quantum_utils import QuantumUtils
+import qutip as qt
 
-class QNNArchitecture:
+logger = setup_logger()
+
+class QNNArchitecture(torch.nn.Module):
     """
-    QNN Architecture functions integrating key concepts:
-    - Building networks (Sec. III)
-    - Feedforward logic (Sec. III.B)
-    - Cost function & training (Sec. IV)
-    - Quantum anomaly detection & thresholding (Sec. IV–V)
+    GPU-accelerated Quantum Neural Network Architecture integrating:
+    - Quantum feature encoding
+    - Quantum-classical hybrid processing
+    - Dynamic anomaly detection
     """
-    def __init__(self):
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        logger.info(f"Using device: {self.device}")
+    def __init__(self, n_qubits: int, n_layers: int, device: Optional[str] = None):
+        super(QNNArchitecture, self).__init__()
+        self.n_qubits = n_qubits
+        self.n_layers = n_layers
+        self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
+        
+        # Initialize quantum parameters on GPU
+        self.quantum_params = torch.nn.ParameterList([
+            torch.nn.Parameter(torch.randn(3, n_qubits, device=self.device))
+            for _ in range(n_layers)
+        ])
+        
+        logger.info(f"Initialized QNN with {n_qubits} qubits, {n_layers} layers on {self.device}")
+
+        self.quantum_utils = QuantumUtils()
+
+    def _to_quantum_state(self, classical_data: torch.Tensor) -> torch.Tensor:
+        """Convert classical data to quantum states using amplitude encoding"""
+        # Normalize input
+        normalized = classical_data / torch.norm(classical_data, dim=1, keepdim=True)
+        # Map to quantum state space
+        return normalized.to(self.device)
+
+    def quantum_layer(self, state: torch.Tensor, layer_params: torch.Tensor) -> torch.Tensor:
+        """Apply quantum operations for a single layer"""
+        # ... existing code ...
+        # Apply rotation gates
+        rotated = self._apply_rotations(state, layer_params[0])
+        # Apply entangling gates
+        entangled = self._apply_entanglement(rotated, layer_params[1])
+        # Apply non-linear transformation
+        return self._apply_nonlinearity(entangled, layer_params[2])
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass through the quantum neural network"""
+        # Convert classical input to quantum state
+        quantum_state = self._to_quantum_state(x)
+        
+        # Apply quantum layers
+        for layer_idx in range(self.n_layers):
+            quantum_state = self.quantum_layer(
+                quantum_state, 
+                self.quantum_params[layer_idx]
+            )
+            
+        # Compute anomaly score
+        return self.compute_anomaly_score(quantum_state)
+
+    def compute_anomaly_score(self, quantum_state: torch.Tensor) -> torch.Tensor:
+        """Compute anomaly score from quantum state"""
+        # Calculate quantum state overlap
+        overlap = torch.abs(torch.sum(torch.conj(quantum_state) * quantum_state, dim=1))
+        return 1 - overlap
 
     @staticmethod
     def _to_torch(qobj):
@@ -177,44 +229,10 @@ class QNNArchitecture:
         logger.info(f"Average cost computed: {avg_cost:.4f}")
         return avg_cost
 
-    @staticmethod
-    def qnn_training(qnn_arch: list, unitaries: list, training_data: list,
-                     learning_rate: float, epochs: int):
-        """
-        Train the QNN using gradient-based updates with GPU acceleration.
-        """
-        logger.info("Starting QNN training for %d epochs.", epochs)
-        best_cost = float('inf')
-        best_unitaries = None
-        device = training_data[0][0].device
-
-        # Convert unitaries to PyTorch parameters for gradient computation
-        trainable_unitaries = [[torch.nn.Parameter(u.clone()) for u in layer] for layer in unitaries[1:]]
-        optimizer = torch.optim.Adam(sum([list(layer) for layer in trainable_unitaries], []), lr=learning_rate)
-
-        for epoch in range(epochs):
-            optimizer.zero_grad()
-            
-            # Forward pass
-            output_states = QNNArchitecture.feedforward(qnn_arch, [[], *trainable_unitaries], training_data)
-            
-            # Calculate cost
-            current_cost = QNNArchitecture.cost_function(training_data, output_states)
-            
-            # Backward pass
-            loss = torch.tensor(current_cost, requires_grad=True, device=device)
-            loss.backward()
-            optimizer.step()
-            
-            # Update best model if needed
-            if current_cost < best_cost:
-                best_cost = current_cost
-                best_unitaries = deepcopy([[u.detach() for u in layer] for layer in trainable_unitaries])
-            
-            logger.info("Epoch %d/%d: Cost=%.6f", epoch + 1, epochs, current_cost)
-            
-            if current_cost < 1e-6:  # Convergence check
-                logger.info("Training converged early at epoch %d", epoch + 1)
-                break
-
-        return [[], *best_unitaries] if best_unitaries else [[], *trainable_unitaries]
+    def create_circuit(self, num_qubits: int) -> qt.Qobj:
+        """Create a quantum circuit with the specified number of qubits."""
+        return self.quantum_utils.tensored_id(num_qubits)
+    
+    def apply_gates(self, state: qt.Qobj, num_qubits: int) -> qt.Qobj:
+        """Apply quantum gates to the state."""
+        return self.quantum_utils.random_qubit_unitary(num_qubits) * state
