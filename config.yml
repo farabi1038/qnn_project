@@ -3,7 +3,7 @@ data:
   test_size: 0.2
   random_state: 42
 
-execution_mode: "test"  # Options: "train", "test", "evaluate"
+execution_mode: "train"  # Options: "train", "test", "evaluate"
 
 quantum:
   type: "discrete"  # or "continuous"
@@ -34,4 +34,4 @@ zero_trust:
   segment_threshold: 0.2
 
 visualization:
-  plot_interval: 10  # Plot every N epochs
+  plot_interval: 2  # Plot every N epochs

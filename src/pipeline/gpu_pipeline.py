@@ -3,14 +3,16 @@ import torch
 import numpy as np
 import cupy as cp
 from datetime import datetime
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple, Union, Any
 from loguru import logger
 from tqdm import tqdm
 import yaml
+import json
 
 from src.utils import setup_logger, PlottingManager
 from src.models import DiscreteVariableQNN, ContinuousVariableQNN
 from src.models.training_state import TrainingState
+from src.utils import plotting
 
 logger = setup_logger()
 
@@ -81,39 +83,31 @@ class GPUPipeline:
         return data.to(self.device)
 
     def compute_metrics(self, y_true: torch.Tensor, y_pred: torch.Tensor) -> Dict[str, float]:
-        """Compute various classification metrics."""
+        """Compute evaluation metrics."""
         try:
-            # Convert to binary predictions if needed
-            if y_pred.dim() > 1:
-                y_pred = (y_pred > 0.5).float()
-            
-            # Calculate metrics
-            tp = torch.sum((y_true == 1) & (y_pred == 1)).float()
-            tn = torch.sum((y_true == 0) & (y_pred == 0)).float()
-            fp = torch.sum((y_true == 0) & (y_pred == 1)).float()
-            fn = torch.sum((y_true == 1) & (y_pred == 0)).float()
-            
-            # Compute metrics with zero handling
-            accuracy = (tp + tn) / (tp + tn + fp + fn + 1e-10)
-            precision = tp / (tp + fp + 1e-10)
-            recall = tp / (tp + fn + 1e-10)
-            f1_score = 2 * (precision * recall) / (precision + recall + 1e-10)
-            
-            return {
-                'accuracy': accuracy.item(),
-                'precision': precision.item(),
-                'recall': recall.item(),
-                'f1_score': f1_score.item()
+            # Ensure both tensors are on the same device
+            y_true = y_true.to(self.device)
+            y_pred = y_pred.to(self.device)
+
+            # Detach tensors and move to CPU for numpy operations
+            y_true_np = y_true.detach().cpu().numpy()
+            y_pred_np = y_pred.detach().cpu().numpy()
+
+            # Compute metrics
+            metrics = {
+                'accuracy': float(np.mean(y_true_np == y_pred_np)),
+                'precision': float(np.sum((y_pred_np == 1) & (y_true_np == 1)) / (np.sum(y_pred_np == 1) + 1e-8)),
+                'recall': float(np.sum((y_pred_np == 1) & (y_true_np == 1)) / (np.sum(y_true_np == 1) + 1e-8))
             }
             
+            metrics['f1_score'] = 2 * (metrics['precision'] * metrics['recall']) / (metrics['precision'] + metrics['recall'] + 1e-8)
+            
+            logger.info(f"Metrics computed: {metrics}")
+            return metrics
+
         except Exception as e:
             logger.error(f"Error computing metrics: {str(e)}")
-            return {
-                'accuracy': 0.0,
-                'precision': 0.0,
-                'recall': 0.0,
-                'f1_score': 0.0
-            }
+            raise
 
     def initialize_model(self) -> Union[DiscreteVariableQNN, ContinuousVariableQNN]:
         """Initialize the QNN model based on configuration."""
@@ -166,11 +160,20 @@ class GPUPipeline:
     def train_model(self, qnn_model, optimizer, X_train, y_train) -> Tuple[List[float], torch.Tensor]:
         """GPU-accelerated model training with checkpointing and error tracking."""
         try:
+            logger.info("Training model...")
+            logger.info(f"Type of X_train is {type(X_train)}, type of y_train is {type(y_train)}")
+            
+            # Handle case where y_train is None by generating dummy labels
+            if y_train is None:
+                logger.info("No labels provided, generating dummy labels for unsupervised learning")
+                y_train = np.zeros(len(X_train), dtype=np.float32)  # Default to all zeros
+            
             X_train = self.to_device(X_train)
             y_train = self.to_device(y_train)
-            logger.debug(f"Training data transferred to {self.device}")
-            logger.debug(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
-            logger.debug(f"X_train dtype: {X_train.dtype}, y_train dtype: {y_train.dtype}")
+            
+            logger.info(f"Training data transferred to {self.device}")
+            logger.info(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
+            logger.info(f"X_train dtype: {X_train.dtype}, y_train dtype: {y_train.dtype}")
             
             metrics_dict = {
                 'loss': [],
@@ -194,24 +197,24 @@ class GPUPipeline:
             
             plot_interval = self.config["visualization"]["plot_interval"]
             early_stopping_patience = self.config.get("training", {}).get("early_stopping_patience", 5)
-            logger.debug(f"Plot interval: {plot_interval}, Early stopping patience: {early_stopping_patience}")
+            logger.info(f"Plot interval: {plot_interval}, Early stopping patience: {early_stopping_patience}")
             
             progress_bar = tqdm(range(start_epoch, self.config["training"]["epochs"]),
                             initial=start_epoch,
                             total=self.config["training"]["epochs"])
-            logger.debug(f"Starting training for {self.config['training']['epochs']} epochs")
+            logger.info(f"Starting training for {self.config['training']['epochs']} epochs")
             
             for epoch in progress_bar:
                 epoch_start_time = datetime.now()
-                logger.debug(f"\nStarting epoch {epoch + 1}")
+                logger.info(f"\nStarting epoch {epoch + 1}")
                 
                 if isinstance(qnn_model, DiscreteVariableQNN):
                     # Process data in batches for DiscreteQNN
                     batch_size = self.config["training"]["batch_size"]
                     batch_losses = []
                     total_batches = (len(X_train) + batch_size - 1) // batch_size
-                    logger.debug(f"Processing DiscreteQNN with batch size: {batch_size}")
-                    logger.debug(f"Total number of batches: {total_batches}")
+                    logger.info(f"Processing DiscreteQNN with batch size: {batch_size}")
+                    logger.info(f"Total number of batches: {total_batches}")
                     
                     for i in range(0, len(X_train), batch_size):
                         batch_start_time = datetime.now()
@@ -220,19 +223,19 @@ class GPUPipeline:
                         # Get batch data
                         batch_X = X_train[i:i + batch_size]
                         batch_y = y_train[i:i + batch_size]
-                        logger.debug(f"\nBatch {batch_num}/{total_batches}:")
-                        logger.debug(f"Batch indices: {i}:{i + batch_size}")
-                        logger.debug(f"Batch X shape: {batch_X.shape}, y shape: {batch_y.shape}")
+                        logger.info(f"\nBatch {batch_num}/{total_batches}:")
+                        logger.info(f"Batch indices: {i}:{i + batch_size}")
+                        logger.info(f"Batch X shape: {batch_X.shape}, y shape: {batch_y.shape}")
                         
                         # Forward pass
-                        logger.debug("Starting forward pass...")
+                        logger.info("Starting forward pass...")
                         output_states = qnn_model(batch_X)
-                        logger.debug(f"Forward pass completed. Output states shape: {output_states.shape}")
+                        logger.info(f"Forward pass completed. Output states shape: {output_states.shape}")
                         
                         # Compute cost
                         cost = qnn_model.compute_cost(output_states, batch_y)
                         batch_losses.append(cost.item())
-                        logger.debug(f"Batch {batch_num} loss: {cost.item():.4f}")
+                        logger.info(f"Batch {batch_num} loss: {cost.item():.4f}")
                         
                         # Backward pass
                         optimizer.zero_grad()
@@ -241,22 +244,22 @@ class GPUPipeline:
                         
                         # Update quantum parameters
                         qnn_model.update_quantum_parameters()
-                        logger.debug("Quantum parameters updated")
+                        logger.info("Quantum parameters updated")
                         
                         batch_time = datetime.now() - batch_start_time
-                        logger.debug(f"Batch {batch_num} processing time: {batch_time}")
+                        logger.info(f"Batch {batch_num} processing time: {batch_time}")
                     
                     # Compute epoch metrics
                     cost = sum(batch_losses) / len(batch_losses)
-                    logger.debug(f"Epoch {epoch + 1} average loss: {cost:.4f}")
+                    logger.info(f"Epoch {epoch + 1} average loss: {cost:.4f}")
                     output_states = qnn_model(X_train)
                     
                 else:
                     # Original continuous QNN forward pass
-                    logger.debug("Processing ContinuousQNN")
+                    logger.info("Processing ContinuousQNN")
                     output_states = qnn_model(X_train)
                     cost = qnn_model.compute_cost(output_states, y_train)
-                    logger.debug(f"Epoch {epoch + 1} loss: {cost.item():.4f}")
+                    logger.info(f"Epoch {epoch + 1} loss: {cost.item():.4f}")
                     
                     optimizer.zero_grad()
                     cost.backward()
@@ -265,7 +268,7 @@ class GPUPipeline:
                 # Calculate metrics
                 predictions = (output_states > 0.5).float()
                 metrics = self.compute_metrics(y_train, predictions)
-                logger.debug(f"Epoch {epoch + 1} metrics: {metrics}")
+                logger.info(f"Epoch {epoch + 1} metrics: {metrics}")
                 
                 # Update metrics dictionary
                 metrics_dict['loss'].append(cost if isinstance(cost, float) else cost.item())
@@ -283,7 +286,7 @@ class GPUPipeline:
                 # Check for early stopping
                 cost_value = cost if isinstance(cost, float) else cost.item()
                 if not self.training_state.check_improvement(cost_value, patience=early_stopping_patience):
-                    logger.debug(f"Early stopping triggered at epoch {epoch + 1}")
+                    logger.info(f"Early stopping triggered at epoch {epoch + 1}")
                     break
                 
                 # Save checkpoint
@@ -295,63 +298,93 @@ class GPUPipeline:
                         metrics_dict,
                         'latest_checkpoint.pt'
                     )
-                    logger.debug(f"Checkpoint saved at epoch {epoch + 1}")
+                    logger.info(f"Checkpoint saved at epoch {epoch + 1}")
                 
                 # Plot training progress
                 if epoch % plot_interval == 0:
                     self.plotting.plot_training_metrics(metrics_dict, epoch)
                     self.plotting.plot_error_tracking(metrics_dict['loss'], epoch)
-                    logger.debug(f"Training plots updated at epoch {epoch + 1}")
+                    logger.info(f"Training plots updated at epoch {epoch + 1}")
                 
                 epoch_time = datetime.now() - epoch_start_time
-                logger.debug(f"Epoch {epoch + 1} processing time: {epoch_time}")
+                logger.info(f"Epoch {epoch + 1} processing time: {epoch_time}")
             
-            logger.debug("Training completed")
-            logger.debug(f"Final metrics: {metrics_dict}")
+            logger.info("Training completed")
+            logger.info(f"Final metrics: {metrics_dict}")
             return metrics_dict['loss'], output_states
             
         except Exception as e:
             logger.error(f"Error in train_model: {str(e)}")
-            logger.debug("Exception details:", exc_info=True)
+            logger.info("Exception details:", exc_info=True)
             raise
 
-    def save_model(self, model, optimizer, metrics: Dict):
-        """Save trained model and associated data."""
+    def save_model(self, model, optimizer, metrics, path=None):
+        """Save the model, optimizer state, and metrics."""
         try:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            save_dir = os.path.join('models', timestamp)
-            os.makedirs(save_dir, exist_ok=True)
+            if path is None:
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                path = f"models/model_{timestamp}.pth"
+                
+            # Create models directory if it doesn't exist
+            os.makedirs(os.path.dirname(path), exist_ok=True)
             
-            # Save model
-            model_path = os.path.join(save_dir, 'model.pt')
-            torch.save({
+            # Save model state
+            checkpoint = {
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'metrics': metrics,
                 'config': self.config,
-                'timestamp': timestamp
-            }, model_path)
+                'timestamp': datetime.now().isoformat()
+            }
             
-            logger.info(f"Model saved to {model_path}")
+            torch.save(checkpoint, path)
+            logger.info(f"Model saved to {path}")
+            
+            # Save model summary
+            summary_path = path.replace('.pth', '_summary.txt')
+            with open(summary_path, 'w') as f:
+                f.write(f"Model Summary\n{'-'*50}\n")
+                f.write(f"Timestamp: {checkpoint['timestamp']}\n")
+                f.write(f"Metrics: {metrics}\n")
+                f.write(f"Config: {self.config}\n")
+            
+            return path
             
         except Exception as e:
             logger.error(f"Error saving model: {str(e)}")
             raise
 
-    def save_results(self, metrics: Dict, history: Dict, predictions: torch.Tensor, true_labels: torch.Tensor):
-        """Save training results and predictions."""
+    def save_results(self, metrics, history, outputs, y_true):
+        """Save all results including metrics, model, and plots."""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            save_dir = os.path.join('results', timestamp)
-            os.makedirs(save_dir, exist_ok=True)
+            base_path = f"results/run_{timestamp}"
+            os.makedirs(base_path, exist_ok=True)
             
-            # Save metrics and history
-            np.save(os.path.join(save_dir, 'metrics.npy'), metrics)
-            np.save(os.path.join(save_dir, 'history.npy'), history)
-            np.save(os.path.join(save_dir, 'predictions.npy'), predictions.cpu().numpy())
-            np.save(os.path.join(save_dir, 'true_labels.npy'), true_labels.cpu().numpy())
+            # Save metrics to JSON
+            metrics_path = f"{base_path}/metrics.json"
+            with open(metrics_path, 'w') as f:
+                json.dump(metrics, f, indent=4)
             
-            logger.info(f"Results saved to {save_dir}")
+            # Use plotting module to save plots
+            plots_path = f"{base_path}/plots"
+            os.makedirs(plots_path, exist_ok=True)
+            
+            # Generate plots using plotting module
+            plotting.plot_training_loss(history['loss'], plots_path)
+            plotting.plot_roc_curve(y_true, outputs, plots_path)
+            plotting.plot_confusion_matrix(y_true, outputs, plots_path)
+            
+            # Save results summary
+            summary_path = f"{base_path}/summary.txt"
+            with open(summary_path, 'w') as f:
+                f.write(f"Results Summary\n{'-'*50}\n")
+                f.write(f"Timestamp: {datetime.now().isoformat()}\n")
+                f.write(f"Metrics: {metrics}\n")
+                f.write(f"Plots saved to: {plots_path}\n")
+            
+            logger.info(f"All results saved to {base_path}")
+            return base_path
             
         except Exception as e:
             logger.error(f"Error saving results: {str(e)}")
@@ -367,4 +400,15 @@ class GPUPipeline:
         if mode not in valid_modes:
             raise ValueError(f"Invalid mode. Must be one of {valid_modes}")
         self.execution_mode = mode
-        logger.info(f"Execution mode set to: {mode}") 
+        logger.info(f"Execution mode set to: {mode}")
+
+class NumpyEncoder(json.JSONEncoder):
+    """Custom JSON encoder for numpy types."""
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        return super().default(obj) 

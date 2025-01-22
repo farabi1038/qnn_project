@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List
 from loguru import logger
+import seaborn as sns
+from sklearn.metrics import roc_curve, precision_recall_curve, confusion_matrix
 
 class PlottingManager:
     def __init__(self):
@@ -220,4 +222,162 @@ class PlottingManager:
                 }
             })
 
-        self.plot_async(plot_tasks) 
+        self.plot_async(plot_tasks)
+
+    @staticmethod
+    def plot_training_history(history, save_dir):
+        """Plot training metrics history."""
+        plt.figure(figsize=(10, 6))
+        for metric, values in history.items():
+            plt.plot(values, label=metric)
+        plt.title('Training History')
+        plt.xlabel('Iteration')
+        plt.ylabel('Value')
+        plt.legend()
+        plt.savefig(os.path.join(save_dir, 'training_history.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_learning_curves(costs, save_dir):
+        """Plot learning curves."""
+        plt.figure(figsize=(10, 6))
+        plt.plot(costs)
+        plt.title('Learning Curve')
+        plt.xlabel('Iteration')
+        plt.ylabel('Loss')
+        plt.savefig(os.path.join(save_dir, 'learning_curves.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_loss_distribution(costs, save_dir):
+        """Plot distribution of loss values."""
+        plt.figure(figsize=(10, 6))
+        sns.histplot(costs, kde=True)
+        plt.title('Loss Distribution')
+        plt.xlabel('Loss Value')
+        plt.ylabel('Count')
+        plt.savefig(os.path.join(save_dir, 'loss_distribution.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_model_performance(y_true, y_pred, save_dir):
+        """Plot model performance metrics."""
+        plt.figure(figsize=(10, 6))
+        plt.scatter(y_true, y_pred, alpha=0.5)
+        plt.plot([0, 1], [0, 1], 'r--')
+        plt.title('Model Performance')
+        plt.xlabel('True Values')
+        plt.ylabel('Predictions')
+        plt.savefig(os.path.join(save_dir, 'model_performance.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_roc_curve(y_true, y_pred, save_dir):
+        """Plot ROC curve."""
+        fpr, tpr, _ = roc_curve(y_true, y_pred)
+        plt.figure(figsize=(10, 6))
+        plt.plot(fpr, tpr)
+        plt.plot([0, 1], [0, 1], 'r--')
+        plt.title('ROC Curve')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.savefig(os.path.join(save_dir, 'roc_curve.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_precision_recall_curve(y_true, y_pred, save_dir):
+        """Plot precision-recall curve."""
+        precision, recall, _ = precision_recall_curve(y_true, y_pred)
+        plt.figure(figsize=(10, 6))
+        plt.plot(recall, precision)
+        plt.title('Precision-Recall Curve')
+        plt.xlabel('Recall')
+        plt.ylabel('Precision')
+        plt.savefig(os.path.join(save_dir, 'precision_recall_curve.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_confusion_matrix(y_true, y_pred, save_dir):
+        """Plot confusion matrix."""
+        cm = confusion_matrix(y_true, y_pred)
+        plt.figure(figsize=(8, 8))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+        plt.title('Confusion Matrix')
+        plt.xlabel('Predicted')
+        plt.ylabel('True')
+        plt.savefig(os.path.join(save_dir, 'confusion_matrix.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_prediction_distribution(predictions, save_dir):
+        """Plot distribution of predictions."""
+        plt.figure(figsize=(10, 6))
+        sns.histplot(predictions, kde=True)
+        plt.title('Prediction Distribution')
+        plt.xlabel('Prediction Value')
+        plt.ylabel('Count')
+        plt.savefig(os.path.join(save_dir, 'prediction_distribution.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_feature_importance(model, X, save_dir):
+        """Plot feature importance if available."""
+        try:
+            importances = model.feature_importances_
+            plt.figure(figsize=(10, 6))
+            plt.bar(range(len(importances)), importances)
+            plt.title('Feature Importance')
+            plt.xlabel('Feature Index')
+            plt.ylabel('Importance')
+            plt.savefig(os.path.join(save_dir, 'feature_importance.png'))
+            plt.close()
+        except:
+            pass  # Skip if feature importance is not available
+
+    @staticmethod
+    def plot_error_analysis(X_errors, y_errors, save_dir):
+        """Plot error analysis."""
+        plt.figure(figsize=(10, 6))
+        plt.scatter(range(len(X_errors)), X_errors[:, 0], c=y_errors)
+        plt.title('Error Analysis')
+        plt.xlabel('Sample Index')
+        plt.ylabel('Feature Value')
+        plt.savefig(os.path.join(save_dir, 'error_analysis.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_threshold_impact(y_true, y_pred, save_dir):
+        """Plot impact of different decision thresholds."""
+        thresholds = np.linspace(0, 1, 100)
+        accuracies = []
+        for thresh in thresholds:
+            accuracy = np.mean((y_pred > thresh) == y_true)
+            accuracies.append(accuracy)
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(thresholds, accuracies)
+        plt.title('Threshold Impact on Accuracy')
+        plt.xlabel('Threshold')
+        plt.ylabel('Accuracy')
+        plt.savefig(os.path.join(save_dir, 'threshold_impact.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_model_architecture(model, save_dir):
+        """Plot model architecture summary."""
+        plt.figure(figsize=(12, 8))
+        plt.text(0.5, 0.5, str(model), ha='center', va='center')
+        plt.axis('off')
+        plt.title('Model Architecture')
+        plt.savefig(os.path.join(save_dir, 'model_architecture.png'))
+        plt.close()
+
+    @staticmethod
+    def plot_metrics_heatmap(metrics_dict, save_dir):
+        """Plot heatmap of performance metrics."""
+        metrics_array = np.array(list(metrics_dict.values())).reshape(1, -1)
+        plt.figure(figsize=(12, 4))
+        sns.heatmap(metrics_array, annot=True, fmt='.3f', xticklabels=list(metrics_dict.keys()))
+        plt.title('Performance Metrics')
+        plt.savefig(os.path.join(save_dir, 'metrics_heatmap.png'))
+        plt.close() 
