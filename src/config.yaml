@@ -1,0 +1,27 @@
+in_features: 5
+num_classes: 3
+n_layers: 6
+layer_widths: [24, 20, 16, 12, 8, 6]
+cutoff_dim: 5
+num_epochs: 12
+batch_size: 128
+learning_rate: 0.001
+train_size: 240
+num_samples: 3000 
+checkpoint_dir: "checkpoints"
+plots_dir: "plots"
+checkpoint_frequency: 5
+data:
+  base_path: "../data"
+  folder_path: "ip_addresses_sample/agg_10_minutes"
+  feature_columns: [
+    'id_time', 'n_flows', 'n_packets', 'n_bytes', 'n_dest_asn', 
+    'n_dest_ports', 'n_dest_ip', 'tcp_udp_ratio_packets', 
+    'tcp_udp_ratio_bytes', 'dir_ratio_packets', 'dir_ratio_bytes', 
+    'avg_duration', 'avg_ttl'
+  ]
+  file_pattern: "*11.csv"
+  test_size: 0.2
+  random_state: 42
+  outlier_removal: true
+  handle_missing: true

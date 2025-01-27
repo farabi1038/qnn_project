@@ -1,0 +1,255 @@
+2025-01-26 00:34:52,038 - main - INFO - Logger 'main' initialized with level 20
+2025-01-26 00:34:52,039 - main - INFO - Starting CasNet application
+2025-01-26 00:34:52,042 - main - INFO - Configuration loaded successfully
+2025-01-26 00:34:52,045 - main - INFO - Directory structure created
+2025-01-26 00:34:52,049 - main - INFO - Data preprocessor initialized
+2025-01-26 00:39:31,438 - main - INFO - Logger 'main' initialized with level 20
+2025-01-26 00:39:31,438 - main - INFO - Starting CasNet application
+2025-01-26 00:39:31,442 - main - INFO - Configuration loaded successfully
+2025-01-26 00:39:31,446 - main - INFO - Directory structure created
+2025-01-26 00:39:31,450 - main - INFO - Data preprocessor initialized
+2025-01-26 00:46:04,549 - main - INFO - Logger 'main' initialized with level 20
+2025-01-26 00:46:04,550 - main - INFO - Starting CasNet application
+2025-01-26 00:46:04,554 - main - INFO - Configuration loaded successfully
+2025-01-26 00:46:04,558 - main - INFO - Directory structure created
+2025-01-26 00:46:04,563 - main - INFO - Data preprocessor initialized
+2025-01-26 00:46:34,556 - main - INFO - Logger 'main' initialized with level 20
+2025-01-26 00:46:34,557 - main - INFO - Starting CasNet application
+2025-01-26 00:46:34,560 - main - INFO - Configuration loaded successfully
+2025-01-26 00:46:34,563 - main - INFO - Directory structure created
+2025-01-26 00:46:34,567 - main - INFO - Data preprocessor initialized
+2025-01-27 09:39:45,212 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 09:39:45,213 - main - INFO - Starting CasNet application
+2025-01-27 09:39:45,217 - main - INFO - Configuration loaded successfully
+2025-01-27 09:39:45,222 - main - INFO - Directory structure created
+2025-01-27 09:39:45,226 - main - INFO - Data preprocessor initialized
+2025-01-27 09:40:16,838 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 09:40:16,838 - main - INFO - Starting CasNet application
+2025-01-27 09:40:16,842 - main - INFO - Configuration loaded successfully
+2025-01-27 09:40:16,846 - main - INFO - Directory structure created
+2025-01-27 09:40:16,851 - main - INFO - Data preprocessor initialized
+2025-01-27 09:40:39,687 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 09:40:39,687 - main - INFO - Starting CasNet application
+2025-01-27 09:40:39,691 - main - INFO - Configuration loaded successfully
+2025-01-27 09:40:39,695 - main - INFO - Directory structure created
+2025-01-27 09:40:39,700 - main - INFO - Data preprocessor initialized
+2025-01-27 09:40:40,017 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 09:40:40,024 - main - INFO - Scaler saved successfully
+2025-01-27 10:02:24,329 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:02:24,330 - main - INFO - Starting CasNet application
+2025-01-27 10:02:24,334 - main - INFO - Configuration loaded successfully
+2025-01-27 10:02:24,338 - main - INFO - Directory structure created
+2025-01-27 10:02:24,343 - main - INFO - Data preprocessor initialized
+2025-01-27 10:02:24,639 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:02:24,647 - main - INFO - Scaler saved successfully
+2025-01-27 10:02:25,024 - main - INFO - Data loaders created successfully
+2025-01-27 10:02:26,411 - main - INFO - Model initialized
+2025-01-27 10:02:26,414 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:03:43,845 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:03:43,846 - main - INFO - Starting CasNet application
+2025-01-27 10:03:43,850 - main - INFO - Configuration loaded successfully
+2025-01-27 10:03:43,854 - main - INFO - Directory structure created
+2025-01-27 10:03:43,859 - main - INFO - Data preprocessor initialized
+2025-01-27 10:03:44,153 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:03:44,157 - main - INFO - Scaler saved successfully
+2025-01-27 10:03:44,414 - main - INFO - Data loaders created successfully
+2025-01-27 10:03:44,978 - main - INFO - Model initialized
+2025-01-27 10:03:44,981 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:03:46,142 - main - INFO - Trainer initialized
+2025-01-27 10:03:46,143 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:04:42,354 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:04:42,355 - main - INFO - Starting CasNet application
+2025-01-27 10:04:42,360 - main - INFO - Configuration loaded successfully
+2025-01-27 10:04:42,365 - main - INFO - Directory structure created
+2025-01-27 10:04:42,369 - main - INFO - Data preprocessor initialized
+2025-01-27 10:04:42,652 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:04:42,656 - main - INFO - Scaler saved successfully
+2025-01-27 10:04:42,899 - main - INFO - Data loaders created successfully
+2025-01-27 10:04:43,456 - main - INFO - Model initialized
+2025-01-27 10:04:43,458 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:04:44,167 - main - INFO - Trainer initialized
+2025-01-27 10:04:44,168 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:04:44,171 - main - INFO - Starting training...
+2025-01-27 10:14:22,452 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:14:22,452 - main - INFO - Starting CasNet application
+2025-01-27 10:14:22,456 - main - INFO - Configuration loaded successfully
+2025-01-27 10:14:22,459 - main - INFO - Directory structure created
+2025-01-27 10:14:22,464 - main - INFO - Data preprocessor initialized
+2025-01-27 10:14:22,753 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:14:22,758 - main - INFO - Scaler saved successfully
+2025-01-27 10:14:22,812 - main - INFO - Data loaders created successfully
+2025-01-27 10:14:23,371 - main - INFO - Model initialized
+2025-01-27 10:14:23,373 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:14:24,014 - main - INFO - Trainer initialized
+2025-01-27 10:14:24,015 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:14:24,017 - main - INFO - Starting training...
+2025-01-27 10:15:08,903 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:15:08,903 - main - INFO - Starting CasNet application
+2025-01-27 10:15:08,907 - main - INFO - Configuration loaded successfully
+2025-01-27 10:15:08,911 - main - INFO - Directory structure created
+2025-01-27 10:15:08,915 - main - INFO - Data preprocessor initialized
+2025-01-27 10:15:09,204 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:15:09,210 - main - INFO - Scaler saved successfully
+2025-01-27 10:15:09,275 - main - INFO - Data loaders created successfully
+2025-01-27 10:15:09,821 - main - INFO - Model initialized
+2025-01-27 10:15:09,823 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:15:10,453 - main - INFO - Trainer initialized
+2025-01-27 10:15:10,454 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:15:10,458 - main - INFO - Starting training...
+2025-01-27 10:15:47,942 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:15:47,943 - main - INFO - Starting CasNet application
+2025-01-27 10:15:47,946 - main - INFO - Configuration loaded successfully
+2025-01-27 10:15:47,951 - main - INFO - Directory structure created
+2025-01-27 10:15:47,956 - main - INFO - Data preprocessor initialized
+2025-01-27 10:15:48,237 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:15:48,241 - main - INFO - Scaler saved successfully
+2025-01-27 10:15:48,291 - main - INFO - Data loaders created successfully
+2025-01-27 10:15:48,307 - main - INFO - Model initialized
+2025-01-27 10:15:48,308 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:15:49,177 - main - INFO - Trainer initialized
+2025-01-27 10:15:49,178 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:15:49,182 - main - INFO - Starting training...
+2025-01-27 10:16:44,553 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:16:44,553 - main - INFO - Starting CasNet application
+2025-01-27 10:16:44,557 - main - INFO - Configuration loaded successfully
+2025-01-27 10:16:44,562 - main - INFO - Directory structure created
+2025-01-27 10:16:44,566 - main - INFO - Data preprocessor initialized
+2025-01-27 10:16:44,882 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:16:44,887 - main - INFO - Scaler saved successfully
+2025-01-27 10:16:44,945 - main - INFO - Data loaders created successfully
+2025-01-27 10:16:44,961 - main - INFO - Model initialized
+2025-01-27 10:16:44,963 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:16:45,908 - main - INFO - Trainer initialized
+2025-01-27 10:16:45,909 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:16:45,913 - main - INFO - Starting training...
+2025-01-27 10:17:35,879 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:17:35,880 - main - INFO - Starting CasNet application
+2025-01-27 10:17:35,883 - main - INFO - Configuration loaded successfully
+2025-01-27 10:17:35,887 - main - INFO - Directory structure created
+2025-01-27 10:17:35,891 - main - INFO - Data preprocessor initialized
+2025-01-27 10:17:36,179 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:17:36,184 - main - INFO - Scaler saved successfully
+2025-01-27 10:17:36,238 - main - INFO - Data loaders created successfully
+2025-01-27 10:17:36,253 - main - INFO - Model initialized
+2025-01-27 10:17:36,256 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:17:37,141 - main - INFO - Trainer initialized
+2025-01-27 10:17:37,143 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:17:37,146 - main - INFO - Starting training...
+2025-01-27 10:18:19,337 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:18:19,338 - main - INFO - Starting CasNet application
+2025-01-27 10:18:19,342 - main - INFO - Configuration loaded successfully
+2025-01-27 10:18:19,350 - main - INFO - Directory structure created
+2025-01-27 10:18:19,355 - main - INFO - Data preprocessor initialized
+2025-01-27 10:18:19,650 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:18:19,654 - main - INFO - Scaler saved successfully
+2025-01-27 10:18:19,707 - main - INFO - Data loaders created successfully
+2025-01-27 10:18:19,722 - main - INFO - Model initialized
+2025-01-27 10:18:19,724 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:18:20,617 - main - INFO - Trainer initialized
+2025-01-27 10:18:20,618 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:18:20,621 - main - INFO - Starting training...
+2025-01-27 10:19:03,826 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:19:03,826 - main - INFO - Starting CasNet application
+2025-01-27 10:19:03,830 - main - INFO - Configuration loaded successfully
+2025-01-27 10:19:03,834 - main - INFO - Directory structure created
+2025-01-27 10:19:03,838 - main - INFO - Data preprocessor initialized
+2025-01-27 10:19:04,127 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:19:04,131 - main - INFO - Scaler saved successfully
+2025-01-27 10:19:04,192 - main - INFO - Data loaders created successfully
+2025-01-27 10:19:04,207 - main - INFO - Model initialized
+2025-01-27 10:19:04,209 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:19:05,173 - main - INFO - Trainer initialized
+2025-01-27 10:19:05,174 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:19:05,177 - main - INFO - Starting training...
+2025-01-27 10:24:00,010 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:24:00,011 - main - INFO - Starting CasNet application
+2025-01-27 10:24:00,015 - main - INFO - Configuration loaded successfully
+2025-01-27 10:24:00,020 - main - INFO - Directory structure created
+2025-01-27 10:24:00,025 - main - INFO - Data preprocessor initialized
+2025-01-27 10:24:00,355 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:24:00,360 - main - INFO - Scaler saved successfully
+2025-01-27 10:24:00,424 - main - INFO - Data loaders created successfully
+2025-01-27 10:24:00,441 - main - INFO - Model initialized
+2025-01-27 10:24:00,443 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:24:01,342 - main - INFO - Trainer initialized
+2025-01-27 10:24:01,343 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:24:01,346 - main - INFO - Starting training...
+2025-01-27 10:25:44,663 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:25:44,663 - main - INFO - Starting CasNet application
+2025-01-27 10:25:44,668 - main - INFO - Configuration loaded successfully
+2025-01-27 10:25:44,672 - main - INFO - Directory structure created
+2025-01-27 10:25:44,676 - main - INFO - Data preprocessor initialized
+2025-01-27 10:25:45,003 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:25:45,008 - main - INFO - Scaler saved successfully
+2025-01-27 10:25:45,069 - main - INFO - Data loaders created successfully
+2025-01-27 10:25:45,084 - main - INFO - Model initialized
+2025-01-27 10:25:45,087 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:25:45,987 - main - INFO - Trainer initialized
+2025-01-27 10:25:45,988 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:25:45,991 - main - INFO - Starting training...
+2025-01-27 10:27:40,339 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:27:40,339 - main - INFO - Starting CasNet application
+2025-01-27 10:27:40,344 - main - INFO - Configuration loaded successfully
+2025-01-27 10:27:40,348 - main - INFO - Directory structure created
+2025-01-27 10:27:40,352 - main - INFO - Data preprocessor initialized
+2025-01-27 10:27:40,979 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:27:40,983 - main - INFO - Scaler saved successfully
+2025-01-27 10:27:41,074 - main - INFO - Data loaders created successfully
+2025-01-27 10:27:41,089 - main - INFO - Model initialized
+2025-01-27 10:27:41,093 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:27:43,170 - main - INFO - Trainer initialized
+2025-01-27 10:27:43,171 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:27:43,175 - main - INFO - Starting training...
+2025-01-27 10:29:21,884 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:29:21,884 - main - INFO - Starting CasNet application
+2025-01-27 10:29:21,889 - main - INFO - Configuration loaded successfully
+2025-01-27 10:29:21,894 - main - INFO - Directory structure created
+2025-01-27 10:29:21,899 - main - INFO - Data preprocessor initialized
+2025-01-27 10:29:22,441 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:29:22,447 - main - INFO - Scaler saved successfully
+2025-01-27 10:29:22,533 - main - INFO - Data loaders created successfully
+2025-01-27 10:29:22,559 - main - INFO - Model initialized
+2025-01-27 10:29:22,562 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:29:24,757 - main - INFO - Trainer initialized
+2025-01-27 10:29:24,758 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:29:24,760 - main - INFO - Starting training...
+2025-01-27 10:30:15,547 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:30:15,547 - main - INFO - Starting CasNet application
+2025-01-27 10:30:15,552 - main - INFO - Configuration loaded successfully
+2025-01-27 10:30:15,556 - main - INFO - Directory structure created
+2025-01-27 10:30:15,560 - main - INFO - Data preprocessor initialized
+2025-01-27 10:30:16,079 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:30:16,083 - main - INFO - Scaler saved successfully
+2025-01-27 10:30:16,183 - main - INFO - Data loaders created successfully
+2025-01-27 10:30:16,209 - main - INFO - Model initialized
+2025-01-27 10:30:16,213 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:30:17,791 - main - INFO - Trainer initialized
+2025-01-27 10:30:17,792 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:30:17,794 - main - INFO - Starting training...
+2025-01-27 10:31:27,428 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:31:27,428 - main - INFO - Starting CasNet application
+2025-01-27 10:31:27,432 - main - INFO - Configuration loaded successfully
+2025-01-27 10:31:27,436 - main - INFO - Directory structure created
+2025-01-27 10:31:27,440 - main - INFO - Data preprocessor initialized
+2025-01-27 10:31:28,038 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:31:28,042 - main - INFO - Scaler saved successfully
+2025-01-27 10:31:28,102 - main - INFO - Data loaders created successfully
+2025-01-27 10:31:28,127 - main - INFO - Model initialized
+2025-01-27 10:31:28,129 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:31:30,058 - main - INFO - Trainer initialized
+2025-01-27 10:31:30,059 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:31:30,061 - main - INFO - Starting training...
+2025-01-27 10:43:52,229 - main - INFO - Training loss: 1.1071
+2025-01-27 10:46:25,277 - main - INFO - Logger 'main' initialized with level 20
+2025-01-27 10:46:25,278 - main - INFO - Starting CasNet application
+2025-01-27 10:46:25,283 - main - INFO - Configuration loaded successfully
+2025-01-27 10:46:25,287 - main - INFO - Directory structure created
+2025-01-27 10:46:25,291 - main - INFO - Data preprocessor initialized
+2025-01-27 10:46:25,650 - main - INFO - Data prepared - Train shape: torch.Size([44155, 13]), Test shape: torch.Size([11039, 13])
+2025-01-27 10:46:25,655 - main - INFO - Scaler saved successfully
+2025-01-27 10:46:25,984 - main - INFO - Data loaders created successfully
+2025-01-27 10:46:26,019 - main - INFO - Model initialized
+2025-01-27 10:46:26,023 - main - INFO - Checkpoint manager and visualizer initialized
+2025-01-27 10:46:27,831 - main - INFO - Trainer initialized
+2025-01-27 10:46:27,832 - main - INFO - Zero-trust controller initialized
+2025-01-27 10:46:27,836 - main - INFO - Starting training...

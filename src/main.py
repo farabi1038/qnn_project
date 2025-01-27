@@ -1,202 +1,267 @@
-import os
+import logging
 import sys
-from datetime import datetime
-import numpy as np
-import json
+import os
+from pathlib import Path
+import yaml
+import torch
+from torch.utils.data import DataLoader
 
-# Add the project root directory to Python path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from data import DataPreprocessor, CasNet2024Dataset
+from models import ModelTrainer, CheckpointManager, CVQNNClassifier
+from utils import TrainingVisualizer
+from zero_trust import ZeroTrustController
+from logger_config import LoggerConfig
 
-from src.utils import setup_logger
-from src.pipeline import GPUPipeline, TestingManager
-from src.data import load_cesnet_data
-from src.core import AnomalyDetector, ZeroTrustFramework
-
-# Initialize logger
-logger = setup_logger()
-
-def setup_environment():
-    """Setup the environment and verify requirements."""
+def load_config(config_path: str) -> dict:
+    """Load configuration from YAML file."""
     try:
-        # Verify CUDA availability
-        import torch
-        cuda_available = torch.cuda.is_available()
-        if cuda_available:
-            device_name = torch.cuda.get_device_name(0)
-            logger.info(f"CUDA is available. Using GPU: {device_name}")
-        else:
-            logger.warning("CUDA is not available. Using CPU only.")
-        
-        # Verify other dependencies
-        logger.debug("All required packages are available")
-        
-        # Create necessary directories
-        required_dirs = ['data', 'logs', 'models', 'results', 'plots', 'checkpoints']
-        for dir_name in required_dirs:
-            os.makedirs(dir_name, exist_ok=True)
-        logger.debug("Directory structure verified")
-        
-        return True
-        
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f)
+        return config
     except Exception as e:
-        logger.error(f"Environment setup failed: {str(e)}")
-        return False
+        raise RuntimeError(f"Error loading config: {str(e)}")
 
-def load_data():
-    try:
-        logger.info("Loading CESNET data...")
-        X, y = load_cesnet_data()  # Directly unpack the tuple
-        logger.info(f"Type of X is {type(X)}, type of y is {type(y)}")
-        
-        # Log shapes separately since y might be None
-        logger.info(f"Data loaded successfully from load_cesnet_data inside load_data")
-        if y is not None:
-            logger.info(f"y shape: {y.shape}")
-        else:
-            logger.info("y is None")
-            
-        return X, y
-    except Exception as e:
-        logger.error(f"Data loading failed: {str(e)}")
-        raise
-
-def run_training_pipeline(pipeline, data):
-    """Run the main training pipeline."""
-    try:
-        logger.info("Starting training pipeline...")
-        X = data['train_data']
-        y = data['y_true']  # y is None in the data dictionary      
-        # Initialize model and optimizer
-        logger.info(f"Type of X is {type(X)}, type of y is {type(y)}")
-        model = pipeline.initialize_model()
-        optimizer = pipeline.initialize_optimizer(model)
-        logger.debug("Model and optimizer initialized")
-        
-        # Train model
-        costs, outputs = pipeline.train_model(model, optimizer, X)
-        logger.info(f"Training completed. Final loss: {costs[-1]:.4f}")
-        
-        # Evaluate model
-        test_outputs = model(X)
-        test_metrics = pipeline.compute_metrics(X, 
-                                             (test_outputs > 0.5).float())
-        logger.info("Model evaluation completed")
-        
-        # Save everything
-        logger.info("Saving model, results, and plots...")
-        pipeline.save_model(model, optimizer, test_metrics)
-        pipeline.save_results(
-            metrics=test_metrics,
-            history={'loss': costs},
-            outputs=test_outputs,
-            y_true=data['test_data']
-        )
-        logger.info("All artifacts saved successfully")
-        
-        return test_metrics
-        
-    except Exception as e:
-        logger.error(f"Training pipeline failed: {str(e)}")
-        raise
-
-def run_testing_pipeline(pipeline):
-    """Run the testing pipeline."""
-    try:
-        logger.info("Starting testing pipeline...")
-        testing_manager = TestingManager()
-        
-        # Run quick test
-        test_metrics, costs, outputs, y_true = testing_manager.test_pipeline(pipeline)
-        logger.info("Quick test completed")
-        
-        # Save test results
-        logger.info("Saving test results and plots...")
-        pipeline.save_results(
-            metrics=test_metrics,
-            history={'loss': costs},
-            outputs=outputs,
-            y_true=y_true
-        )
-        
-        # Run performance test if configured
-        if pipeline.config.get('testing', {}).get('run_performance_test', False):
-            logger.info("Starting performance test...")
-            avg_metrics, execution_times = testing_manager.run_performance_test(
-                num_iterations=pipeline.config['testing'].get('num_iterations', 5)
-            )
-            logger.info("Performance test completed")
-            
-            # Save performance test results
-            perf_results = {
-                'avg_metrics': avg_metrics,
-                'execution_times': execution_times.tolist(),
-                'mean_execution_time': float(np.mean(execution_times)),
-                'std_execution_time': float(np.std(execution_times))
-            }
-            
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            perf_path = f"results/performance_{timestamp}.json"
-            with open(perf_path, 'w') as f:
-                json.dump(perf_results, f, indent=4)
-            logger.info(f"Performance results saved to {perf_path}")
-            
-            return test_metrics, avg_metrics, execution_times
-        
-        return test_metrics, None, None
-        
-    except Exception as e:
-        logger.error(f"Testing pipeline failed: {str(e)}")
-        raise
+def setup_directories(config: dict) -> None:
+    """Create necessary directories for outputs."""
+    directories = [
+        config['checkpoint_dir'],
+        config['plots_dir'],
+        'logs',
+        'models'
+    ]
+    for directory in directories:
+        Path(directory).mkdir(parents=True, exist_ok=True)
 
 def main():
-    """Main entry point for the pipeline."""
+    """Main execution function"""
+    # Create a basic logger first for error handling
+    logging.basicConfig(level=logging.INFO)
+    basic_logger = logging.getLogger(__name__)
+    
     try:
-        start_time = datetime.now()
-        logger.info("Starting pipeline execution")
+        # Create necessary directories first
+        Path('logs').mkdir(parents=True, exist_ok=True)
         
-        # Setup environment
-        if not setup_environment():
-            logger.error("Environment setup failed. Exiting.")
-            sys.exit(1)
+        # Now setup the full logger
+        logger = LoggerConfig.setup_logger(
+            "main",
+            log_file='logs/casnet.log',
+            level=logging.INFO
+        )
+        logger.info("Starting CasNet application")
+
+        # Load configuration
+        config = load_config('config.yaml')
+        logger.info("Configuration loaded successfully")
+
+        # Setup all other directories
+        setup_directories(config)
+        logger.info("Directory structure created")
+
+        # Initialize data preprocessor
+        preprocessor = DataPreprocessor(config_path='config.yaml')
+        logger.info("Data preprocessor initialized")
+
+        # Prepare data
+        X_train, _, X_test, _ = preprocessor.prepare_data(
+            test_size=config['data']['test_size'],
+            random_state=config['data']['random_state']
+        )
+        logger.info(f"Data prepared - Train shape: {X_train.shape}, Test shape: {X_test.shape}")
+
+        # Save scaler for future use
+        preprocessor.save_scaler('models/scaler.pkl')
+        logger.info("Scaler saved successfully")
+
+        # Create datasets
+        train_dataset = CasNet2024Dataset(X_train)
+        test_dataset = CasNet2024Dataset(X_test)
         
-        # Initialize pipeline
-        logger.info("Initializing GPU Pipeline...")
-        pipeline = GPUPipeline()
-        
-        # Determine execution mode
-        mode = pipeline.config.get('execution_mode')
-        logger.info(f"Execution mode: {mode}")
-        
-        if mode == 'train':
-            # Load and process data
-            logger.info("Loading data...")
-            X, y = load_data()
-            # Run training pipeline
-            metrics = run_training_pipeline(pipeline, {'train_data': X, 'test_data': X, 'y_true': y})
-            logger.info("Training pipeline completed successfully")
-            logger.info(f"Final metrics: {metrics}")
-            
-        elif mode == 'test':
-            # Run testing pipeline
-            metrics, avg_metrics, execution_times = run_testing_pipeline(pipeline)
-            logger.info("Testing pipeline completed successfully")
-            logger.info(f"Test metrics: {metrics}")
-            if avg_metrics:
-                logger.info(f"Average performance metrics: {avg_metrics}")
-                logger.info(f"Average execution time: {np.mean(execution_times):.2f} seconds")
-        
-        else:
-            logger.error(f"Unknown execution mode: {mode}")
-            sys.exit(1)
-        
-        execution_time = datetime.now() - start_time
-        logger.info(f"Total execution time: {execution_time}")
-        logger.info("Pipeline execution completed successfully")
-        
+        # Create data loaders
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=config['batch_size'],
+            shuffle=True,
+            num_workers=config.get('num_workers', 2),
+            pin_memory=True if torch.cuda.is_available() else False
+        )
+
+        test_loader = DataLoader(
+            test_dataset,
+            batch_size=config['batch_size'],
+            shuffle=False,
+            num_workers=config.get('num_workers', 2),
+            pin_memory=True if torch.cuda.is_available() else False
+        )
+        logger.info("Data loaders created successfully")
+
+        # Initialize model
+        model = CVQNNClassifier(
+            in_features=X_train.shape[1],  # Use actual number of features
+            n_layers=config['n_layers'],
+            layer_widths=config['layer_widths'],
+            out_classes=config['num_classes'],
+            cutoff=config['cutoff_dim']
+        )
+        logger.info("Model initialized")
+
+        # Initialize checkpoint manager and visualizer
+        checkpoint_manager = CheckpointManager(save_dir=config['checkpoint_dir'])
+        visualizer = TrainingVisualizer(save_dir=config['plots_dir'])
+        logger.info("Checkpoint manager and visualizer initialized")
+
+        # Initialize trainer
+        trainer = ModelTrainer(
+            model=model,
+            config=config,
+            checkpoint_manager=checkpoint_manager,
+            visualizer=visualizer
+        )
+        logger.info("Trainer initialized")
+
+        # Initialize zero-trust controller
+        zt_controller = ZeroTrustController(
+            gamma_init=config.get('zero_trust', {}).get('gamma_init', 0.4),
+            tau_init=config.get('zero_trust', {}).get('tau_init', 0.5)
+        )
+        logger.info("Zero-trust controller initialized")
+
+        # Resume training if checkpoint exists
+        latest_checkpoint = checkpoint_manager.get_latest_checkpoint()
+        if latest_checkpoint:
+            checkpoint_manager.load_checkpoint(
+                latest_checkpoint,
+                model=model,
+                optimizer=trainer.optimizer
+            )
+            logger.info(f"Resumed training from checkpoint: {latest_checkpoint}")
+
+        # Training loop
+        logger.info("Starting training...")
+        for epoch in range(trainer.current_epoch, config['num_epochs']):
+            try:
+                # Training step
+                avg_loss = trainer.train_epoch(train_loader)
+                logger.info(f"Training loss: {avg_loss:.4f}")
+                # Validation step
+                val_acc, tpr, fpr, _ = trainer.evaluate(test_loader)
+                logger.info(f"Validation accuracy: {val_acc:.4f}")
+                # Update zero-trust thresholds
+                stats_dict = {'TPR': tpr, 'FPR': fpr}
+                zt_controller.dynamic_update_thresholds(stats_dict)
+                logger.info(f"Updated zero-trust thresholds: γ_q={zt_controller.gamma_q:.2f}, τ={zt_controller.tau:.2f}")
+                # Update visualization history
+                visualizer.update_history(
+                    epoch=epoch,
+                    loss=avg_loss,
+                    accuracy=val_acc,
+                    learning_rate=trainer.optimizer.param_groups[0]['lr'],
+                    tpr=tpr,
+                    fpr=fpr
+                )
+                
+                # Save checkpoint
+                if (epoch + 1) % config['checkpoint_frequency'] == 0:
+                    metrics = {
+                        'loss': avg_loss,
+                        'accuracy': val_acc,
+                        'tpr': tpr,
+                        'fpr': fpr
+                    }
+                    checkpoint_manager.save_checkpoint(
+                        model=model,
+                        optimizer=trainer.optimizer,
+                        epoch=epoch,
+                        metrics=metrics,
+                        is_best=(val_acc > trainer.best_accuracy)
+                    )
+                
+                # Log progress
+                logger.info(
+                    f"Epoch {epoch+1}/{config['num_epochs']} - "
+                    f"Loss: {avg_loss:.4f}, Acc: {val_acc:.4f}, "
+                    f"TPR: {tpr:.4f}, FPR: {fpr:.4f}, "
+                    f"γ_q: {zt_controller.gamma_q:.2f}, "
+                    f"τ: {zt_controller.tau:.2f}"
+                )
+                
+            except Exception as e:
+                logger.error(f"Error in epoch {epoch+1}: {str(e)}")
+                continue
+
+        # Final evaluation
+        logger.info("Training completed. Starting final evaluation...")
+        perform_final_evaluation(trainer, test_loader, zt_controller)
+
+        # Save final visualizations
+        visualizer.plot_metrics(save=True)
+        visualizer.save_metrics_csv()
+        logger.info("Final visualizations saved")
+
+        logger.info("CasNet application completed successfully")
+
     except Exception as e:
-        logger.error(f"Pipeline execution failed: {str(e)}")
-        logger.debug("Exception details:", exc_info=True)
+        basic_logger.error(f"Fatal error in main execution: {str(e)}")
         sys.exit(1)
 
+def perform_final_evaluation(
+    trainer: ModelTrainer,
+    test_loader: DataLoader,
+    zt_controller: ZeroTrustController
+) -> None:
+    """Perform final model evaluation with zero-trust decisions."""
+    logger = logging.getLogger(__name__)
+    
+    try:
+        logger.info("\n=== FINAL EVALUATION AND ZERO-TRUST DECISIONS ===")
+        val_acc, tpr, fpr, predictions = trainer.evaluate(test_loader)
+        
+        logger.info(f"Final Metrics:")
+        logger.info(f"  Accuracy: {val_acc:.4f}")
+        logger.info(f"  TPR: {tpr:.4f}")
+        logger.info(f"  FPR: {fpr:.4f}")
+        logger.info(f"  Final γ_q: {zt_controller.gamma_q:.4f}")
+        logger.info(f"  Final τ: {zt_controller.tau:.4f}")
+        
+        # Detailed zero-trust analysis
+        sample_count = 0
+        with torch.no_grad():
+            for batch_x, batch_y in test_loader:
+                batch_x = batch_x.to(trainer.device)
+                logits = trainer.model(batch_x)
+                probs = torch.softmax(logits, dim=1)
+                
+                for i in range(len(batch_x)):
+                    # Simulate user/device context
+                    user_ctx = float(torch.rand(1))
+                    dev_ctx = float(torch.rand(1))
+                    mal_prob = float(probs[i, 2])  # probability of malicious class
+                    
+                    # Compute risk and decisions
+                    risk = zt_controller.compute_risk_score(user_ctx, dev_ctx, mal_prob)
+                    access_decision = "GRANTED" if risk < zt_controller.tau else "DENIED"
+                    seg_decision = zt_controller.micro_segmentation_policy(
+                        f"Segment_{sample_count}",
+                        mal_prob
+                    )
+                    
+                    logger.info(
+                        f"Flow #{sample_count}:\n"
+                        f"  Malicious Prob: {mal_prob:.3f}\n"
+                        f"  Risk Score: {risk:.3f}\n"
+                        f"  Access: {access_decision}\n"
+                        f"  {seg_decision}"
+                    )
+                    
+                    sample_count += 1
+                    if sample_count >= 20:  # Limit detailed analysis to 20 samples
+                        break
+                if sample_count >= 20:
+                    break
+                    
+    except Exception as e:
+        logger.error(f"Error in final evaluation: {str(e)}")
+        raise
+
 if __name__ == "__main__":
-    main() 
+    main()

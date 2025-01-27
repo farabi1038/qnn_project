@@ -1,9 +1,12 @@
-from .continuous_qnn import ContinuousVariableQNN
-from .discrete_qnn import DiscreteVariableQNN
-from .qnn_architecture import QNNArchitecture
+"""
+Model-related package initialization.
+"""
+from .trainer import ModelTrainer
+from .checkpoint import CheckpointManager
+from .classifier import CVQNNClassifier
 
 __all__ = [
-    'ContinuousVariableQNN',
-    'DiscreteVariableQNN',
-    'QNNArchitecture'
+    'ModelTrainer',
+    'CheckpointManager',
+    'CVQNNClassifier'
 ] 
