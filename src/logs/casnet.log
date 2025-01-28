@@ -253,3 +253,11 @@
 2025-01-27 10:46:27,831 - main - INFO - Trainer initialized
 2025-01-27 10:46:27,832 - main - INFO - Zero-trust controller initialized
 2025-01-27 10:46:27,836 - main - INFO - Starting training...
+2025-01-27 11:39:00,971 - main - INFO - Training loss: 0.9905
+2025-01-27 11:52:02,561 - main - INFO - Validation accuracy: 0.5450
+2025-01-27 11:52:02,564 - main - INFO - Updated zero-trust thresholds: γ_q=0.42, τ=0.48
+2025-01-27 11:52:02,564 - main - ERROR - Error in epoch 1: 'epoch'
+2025-01-27 12:48:27,728 - main - INFO - Training loss: 0.9905
+2025-01-27 13:01:57,469 - main - INFO - Validation accuracy: 0.5450
+2025-01-27 13:01:57,474 - main - INFO - Updated zero-trust thresholds: γ_q=0.44, τ=0.46
+2025-01-27 13:01:57,474 - main - ERROR - Error in epoch 2: 'epoch'
