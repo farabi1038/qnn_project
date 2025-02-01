@@ -166,7 +166,7 @@ class CVQNNClassifier(nn.Module):
                 if isinstance(meas, tuple):
                     meas = torch.stack([torch.tensor(m, requires_grad=True) for m in meas])
                 else:
-                    meas = torch.tensor(meas, requires_grad=True, device=x_batch.device)
+                    meas = torch.as_tensor(meas).clone().detach().requires_grad_(True).to(x_batch.device)
                 
                 # Transform measurements to logits and maintain gradients
                 logits = torch.log1p(meas)

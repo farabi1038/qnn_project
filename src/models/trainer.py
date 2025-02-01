@@ -338,3 +338,23 @@ class ModelTrainer:
         except Exception as e:
             self.logger.error(f"Error resuming from checkpoint: {str(e)}")
             raise 
+
+    def evaluate_loss(self, val_loader):
+        """Calculate validation loss"""
+        self.model.eval()
+        total_loss = 0.0
+        n_batches = len(val_loader)
+        
+        with torch.no_grad():
+            for data, target in val_loader:
+                data = data.to(self.device)
+                target = target.to(self.device)
+                output = self.model(data)
+                loss = self.criterion(output, target)
+                total_loss += loss.item()
+        
+        return total_loss / n_batches
+
+    def get_last_train_accuracy(self):
+        """Return the accuracy from the last training batch"""
+        return self.last_train_accuracy if hasattr(self, 'last_train_accuracy') else 0.0 
