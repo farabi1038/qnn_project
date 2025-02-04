@@ -863,3 +863,2552 @@ Generated plot files:
 2025-01-31 12:02:09,790 - main - INFO - - /mnt/c/Users/ibnfa/Documents/GitHub/quatum_anomaly/src/plots/weight_dist_epoch_1.png
 2025-01-31 12:02:09,790 - main - INFO - - /mnt/c/Users/ibnfa/Documents/GitHub/quatum_anomaly/src/plots/weight_dist_epoch_2.png
 2025-01-31 12:02:09,791 - main - INFO - Training completed successfully!
+2025-02-01 20:26:35,699 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 20:26:35,699 - main - INFO - Starting CasNet application
+2025-02-01 20:26:35,703 - main - INFO - Configuration loaded successfully
+2025-02-01 20:26:35,751 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 20:26:35,752 - main - INFO - Scaler saved successfully
+2025-02-01 20:26:35,815 - main - INFO - Data loaders created successfully
+2025-02-01 20:26:35,817 - main - INFO - Model initialized successfully
+2025-02-01 20:26:37,328 - main - INFO - Trainer initialized successfully
+2025-02-01 20:26:37,328 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 20:26:37,328 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 20:26:37,328 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 20:26:37,467 - main - ERROR - Error in epoch 1: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:26:37,477 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 20:26:37,563 - main - ERROR - Error in epoch 2: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:26:37,564 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 20:26:39,674 - main - INFO - 
+Generated plot files:
+2025-02-01 20:26:39,675 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-01 20:26:39,675 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 20:26:39,675 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 20:26:39,675 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_1.png
+2025-02-01 20:26:39,675 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_2.png
+2025-02-01 20:26:39,675 - main - INFO - Training completed successfully!
+2025-02-01 20:28:00,979 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 20:28:00,979 - main - INFO - Starting CasNet application
+2025-02-01 20:28:00,982 - main - INFO - Configuration loaded successfully
+2025-02-01 20:28:01,026 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 20:28:01,033 - main - INFO - Scaler saved successfully
+2025-02-01 20:28:01,084 - main - INFO - Data loaders created successfully
+2025-02-01 20:28:01,087 - main - INFO - Model initialized successfully
+2025-02-01 20:28:02,543 - main - INFO - Trainer initialized successfully
+2025-02-01 20:28:02,543 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 20:28:02,544 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 20:28:02,544 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 20:28:02,655 - main - ERROR - Error in epoch 1: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:28:02,658 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 20:28:02,755 - main - ERROR - Error in epoch 2: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:28:02,756 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 20:28:04,422 - main - INFO - 
+Generated plot files:
+2025-02-01 20:28:04,423 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-01 20:28:04,423 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 20:28:04,423 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 20:28:04,423 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_1.png
+2025-02-01 20:28:04,423 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_2.png
+2025-02-01 20:28:04,423 - main - INFO - Training completed successfully!
+2025-02-01 20:48:08,881 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 20:48:08,881 - main - INFO - Starting CasNet application
+2025-02-01 20:48:08,884 - main - INFO - Configuration loaded successfully
+2025-02-01 20:48:08,927 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 20:48:08,938 - main - INFO - Scaler saved successfully
+2025-02-01 20:48:08,938 - main - INFO - Data loaders created successfully
+2025-02-01 20:48:08,940 - main - INFO - Model initialized successfully
+2025-02-01 20:48:10,371 - main - INFO - Trainer initialized successfully
+2025-02-01 20:48:10,371 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 20:48:10,372 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 20:48:10,372 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 20:48:10,538 - main - ERROR - Error in epoch 1: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:48:10,543 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 20:48:10,668 - main - ERROR - Error in epoch 2: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:48:10,669 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 20:51:34,863 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 20:51:34,863 - main - INFO - Starting CasNet application
+2025-02-01 20:51:34,866 - main - INFO - Configuration loaded successfully
+2025-02-01 20:51:34,912 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 20:51:34,920 - main - INFO - Scaler saved successfully
+2025-02-01 20:51:34,921 - main - INFO - Data loaders created successfully
+2025-02-01 20:51:34,923 - main - INFO - Model initialized successfully
+2025-02-01 20:51:36,485 - main - INFO - Trainer initialized successfully
+2025-02-01 20:51:36,485 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 20:51:36,485 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 20:51:36,485 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 20:51:36,628 - main - ERROR - Error in epoch 1: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:51:36,634 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 20:51:36,745 - main - ERROR - Error in epoch 2: Default gaussian only support single measurements.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 69, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 165, in forward
+    meas = self.qnode(all_params, sample)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 905, in __call__
+    return self._impl_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/qnode.py", line 881, in _impl_call
+    res = qml.execute(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/execution.py", line 232, in execute
+    results = run(tapes, device, config, inner_transform)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 333, in run
+    results = ml_execute(tapes, execute_fn, jpc, device=device)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 236, in execute
+    return ExecuteTapes.apply(kwargs, *parameters)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 89, in new_apply
+    flat_out = orig_apply(out_struct_holder, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 93, in new_forward
+    out = orig_fw(ctx, *inp)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/interfaces/torch.py", line 158, in forward
+    res = tuple(kwargs["execute_fn"](ctx.tapes))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/workflow/run.py", line 247, in inner_execute
+    results = device.execute(transformed_tapes, execution_config=execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/modifiers/single_tape_support.py", line 32, in execute
+    results = batch_execute(self, circuits, execution_config)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/legacy_facade.py", line 374, in execute
+    return _set_shots(dev, first_shot)(dev.batch_execute)(circuits, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 902, in batch_execute
+    results = super().batch_execute(circuits)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/_legacy_device.py", line 532, in batch_execute
+    res = self.execute(circuit.operations, circuit.measurements)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/default_gaussian.py", line 898, in execute
+    raise qml.QuantumFunctionError("Default gaussian only support single measurements.")
+pennylane.QuantumFunctionError: Default gaussian only support single measurements.
+2025-02-01 20:51:36,746 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 20:51:38,454 - main - INFO - 
+Generated plot files:
+2025-02-01 20:51:38,455 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-01 20:51:38,455 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 20:51:38,455 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 20:51:38,455 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_1.png
+2025-02-01 20:51:38,455 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_2.png
+2025-02-01 20:51:38,455 - main - INFO - Training completed successfully!
+2025-02-01 20:56:22,324 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 20:56:22,324 - main - INFO - Starting CasNet application
+2025-02-01 20:56:22,328 - main - INFO - Configuration loaded successfully
+2025-02-01 20:56:22,372 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 20:56:22,381 - main - INFO - Scaler saved successfully
+2025-02-01 20:56:22,382 - main - INFO - Data loaders created successfully
+2025-02-01 20:56:22,398 - main - ERROR - Fatal error in main execution: Device strawberryfields.fock does not exist. Make sure the required plugin is installed.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 206, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 114, in __init__
+    self.qnode = make_cv_qnode(n_layers, layer_widths, out_classes, cutoff)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 67, in make_cv_qnode
+    dev = qml.device("strawberryfields.fock", wires=max_width, cutoff_dim=cutoff)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/devices/device_constructor.py", line 284, in device
+    raise qml.DeviceError(
+pennylane.DeviceError: Device strawberryfields.fock does not exist. Make sure the required plugin is installed.
+2025-02-01 20:57:51,400 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 20:57:51,400 - main - INFO - Starting CasNet application
+2025-02-01 20:57:51,404 - main - INFO - Configuration loaded successfully
+2025-02-01 20:57:51,447 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 20:57:51,448 - main - INFO - Scaler saved successfully
+2025-02-01 20:57:51,449 - main - INFO - Data loaders created successfully
+2025-02-01 20:57:52,390 - main - INFO - Model initialized successfully
+2025-02-01 20:57:53,470 - main - INFO - Trainer initialized successfully
+2025-02-01 20:57:53,470 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 20:57:53,471 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 20:57:53,471 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 21:00:33,691 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:00:33,692 - main - INFO - Starting CasNet application
+2025-02-01 21:00:33,695 - main - INFO - Configuration loaded successfully
+2025-02-01 21:00:33,743 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:00:33,744 - main - INFO - Scaler saved successfully
+2025-02-01 21:00:33,745 - main - INFO - Data loaders created successfully
+2025-02-01 21:00:33,774 - main - ERROR - Fatal error in main execution: DefaultQubit.__init__() got an unexpected keyword argument 'cutoff_dim'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 206, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 114, in __init__
+    self.qnode = make_cv_qnode(n_layers, layer_widths, out_classes, cutoff)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 67, in make_cv_qnode
+    dev = qml.device("default.qubit", wires=max_width, cutoff_dim=cutoff)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/__init__.py", line 326, in device
+    dev = plugin_device_class(*args, **options)
+TypeError: DefaultQubit.__init__() got an unexpected keyword argument 'cutoff_dim'
+2025-02-01 21:04:08,981 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:04:08,981 - main - INFO - Starting CasNet application
+2025-02-01 21:04:08,984 - main - INFO - Configuration loaded successfully
+2025-02-01 21:04:09,028 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:04:09,070 - main - INFO - Scaler saved successfully
+2025-02-01 21:04:09,071 - main - INFO - Data loaders created successfully
+2025-02-01 21:04:09,071 - main - ERROR - Fatal error in main execution: make_cv_qnode() takes from 2 to 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 206, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 111, in __init__
+    self.qnode = make_cv_qnode(n_layers, layer_widths, out_classes, cutoff)
+TypeError: make_cv_qnode() takes from 2 to 3 positional arguments but 4 were given
+2025-02-01 21:07:04,870 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:07:04,871 - main - INFO - Starting CasNet application
+2025-02-01 21:07:04,874 - main - INFO - Configuration loaded successfully
+2025-02-01 21:07:04,918 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:07:04,920 - main - INFO - Scaler saved successfully
+2025-02-01 21:07:04,921 - main - INFO - Data loaders created successfully
+2025-02-01 21:07:04,950 - main - INFO - Model initialized successfully
+2025-02-01 21:07:06,407 - main - INFO - Trainer initialized successfully
+2025-02-01 21:07:06,407 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 21:07:06,408 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:07:06,408 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 21:07:09,898 - main - INFO - Generating plots...
+2025-02-01 21:07:10,954 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:07:10,955 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.2377
+  Validation Accuracy: 0.4615
+  TPR: 0.0000
+  FPR: 0.3200
+  Time: 2.90s
+2025-02-01 21:07:10,955 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 21:07:14,374 - main - INFO - Generating plots...
+2025-02-01 21:07:15,621 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:07:15,621 - main - INFO - Epoch 2/2 Results:
+  Loss: 1.2239
+  Validation Accuracy: 0.4615
+  TPR: 0.0000
+  FPR: 0.3200
+  Time: 2.83s
+2025-02-01 21:07:15,622 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 21:07:17,363 - main - INFO - 
+Generated plot files:
+2025-02-01 21:07:17,364 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-01 21:07:17,364 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 21:07:17,364 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 21:07:17,364 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_1.png
+2025-02-01 21:07:17,364 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/weight_dist_epoch_2.png
+2025-02-01 21:07:17,365 - main - INFO - Training completed successfully!
+2025-02-01 21:12:30,196 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:12:30,196 - main - INFO - Starting CasNet application
+2025-02-01 21:12:30,200 - main - INFO - Configuration loaded successfully
+2025-02-01 21:12:30,248 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:12:30,249 - main - INFO - Scaler saved successfully
+2025-02-01 21:12:30,250 - main - INFO - Data loaders created successfully
+2025-02-01 21:12:30,281 - main - INFO - Model initialized successfully
+2025-02-01 21:12:31,743 - main - INFO - Trainer initialized successfully
+2025-02-01 21:12:31,743 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 21:12:31,743 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:12:31,744 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 21:12:35,312 - main - INFO - Generating plots...
+2025-02-01 21:12:35,759 - main - ERROR - Error in epoch 1: 'PerformanceAnalyzer' object has no attribute 'plot_gradient_norms'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 105, in train
+    analyzer.plot_gradient_norms()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_gradient_norms'. Did you mean: 'gradient_norms'?
+2025-02-01 21:12:35,760 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 21:12:39,276 - main - INFO - Generating plots...
+2025-02-01 21:12:39,636 - main - ERROR - Error in epoch 2: 'PerformanceAnalyzer' object has no attribute 'plot_gradient_norms'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 105, in train
+    analyzer.plot_gradient_norms()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_gradient_norms'. Did you mean: 'gradient_norms'?
+2025-02-01 21:12:39,637 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 21:12:39,983 - main - ERROR - Error generating final plots and report: 'PerformanceAnalyzer' object has no attribute 'plot_gradient_norms'
+2025-02-01 21:12:39,984 - main - INFO - Training completed successfully!
+2025-02-01 21:14:20,283 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:14:20,283 - main - INFO - Starting CasNet application
+2025-02-01 21:14:20,286 - main - INFO - Configuration loaded successfully
+2025-02-01 21:14:20,333 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:14:20,335 - main - INFO - Scaler saved successfully
+2025-02-01 21:14:20,335 - main - INFO - Data loaders created successfully
+2025-02-01 21:14:20,368 - main - INFO - Model initialized successfully
+2025-02-01 21:14:21,817 - main - INFO - Trainer initialized successfully
+2025-02-01 21:14:21,817 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 21:14:21,817 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:14:21,817 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 21:14:25,286 - main - INFO - Generating plots...
+2025-02-01 21:14:25,747 - main - ERROR - Error in epoch 1: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 106, in train
+    analyzer.plot_resource_usage()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:14:25,750 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 21:14:29,177 - main - INFO - Generating plots...
+2025-02-01 21:14:29,575 - main - ERROR - Error in epoch 2: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 106, in train
+    analyzer.plot_resource_usage()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:14:29,578 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 21:14:29,904 - main - ERROR - Error generating final plots and report: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:14:29,904 - main - INFO - Training completed successfully!
+2025-02-01 21:20:24,435 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:20:24,435 - main - INFO - Starting CasNet application
+2025-02-01 21:20:24,439 - main - INFO - Configuration loaded successfully
+2025-02-01 21:20:24,485 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:20:24,487 - main - INFO - Scaler saved successfully
+2025-02-01 21:20:24,487 - main - INFO - Data loaders created successfully
+2025-02-01 21:20:24,523 - main - INFO - Model initialized successfully
+2025-02-01 21:20:25,991 - main - INFO - Trainer initialized successfully
+2025-02-01 21:20:25,992 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 21:20:25,992 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:20:25,992 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 21:20:29,664 - main - INFO - Generating plots...
+2025-02-01 21:20:30,406 - main - ERROR - Error in epoch 1: 'PerformanceAnalyzer' object has no attribute 'plot_weight_distribution'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 107, in train
+    analyzer.plot_weight_distribution(model, epoch + 1)
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_weight_distribution'
+2025-02-01 21:20:30,407 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 21:20:34,012 - main - INFO - Generating plots...
+2025-02-01 21:20:34,709 - main - ERROR - Error in epoch 2: 'PerformanceAnalyzer' object has no attribute 'plot_weight_distribution'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 107, in train
+    analyzer.plot_weight_distribution(model, epoch + 1)
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_weight_distribution'
+2025-02-01 21:20:34,710 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 21:20:35,545 - main - ERROR - Error generating final plots and report: 'PerformanceAnalyzer' object has no attribute 'plot_weight_distribution'
+2025-02-01 21:20:35,546 - main - INFO - Training completed successfully!
+2025-02-01 21:23:22,655 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:23:22,656 - main - INFO - Starting CasNet application
+2025-02-01 21:23:22,659 - main - INFO - Configuration loaded successfully
+2025-02-01 21:23:22,705 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:23:22,706 - main - INFO - Scaler saved successfully
+2025-02-01 21:23:22,706 - main - INFO - Data loaders created successfully
+2025-02-01 21:23:22,742 - main - INFO - Model initialized successfully
+2025-02-01 21:23:24,191 - main - INFO - Trainer initialized successfully
+2025-02-01 21:23:24,191 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 21:23:24,191 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:23:24,191 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 21:23:27,771 - main - INFO - Generating plots...
+2025-02-01 21:23:28,254 - main - ERROR - Error in epoch 1: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 106, in train
+    analyzer.plot_resource_usage()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:23:28,256 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 21:23:32,184 - main - INFO - Generating plots...
+2025-02-01 21:23:32,587 - main - ERROR - Error in epoch 2: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 106, in train
+    analyzer.plot_resource_usage()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:23:32,589 - main - INFO - 
+Training completed. Generating final plots and report...
+2025-02-01 21:23:32,895 - main - ERROR - Error generating final plots and report: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:23:32,895 - main - INFO - Training completed successfully!
+2025-02-01 21:53:58,181 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:53:58,181 - main - INFO - 🚀 Starting CasNet application
+2025-02-01 21:53:58,185 - main - INFO - ✅ Configuration loaded successfully
+2025-02-01 21:53:58,233 - main - INFO - 📊 Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:53:58,235 - main - INFO - ✅ Scaler saved successfully
+2025-02-01 21:53:58,236 - main - INFO - ✅ Data loaders created successfully
+2025-02-01 21:53:58,269 - main - INFO - ✅ Model initialized successfully
+2025-02-01 21:53:59,742 - main - INFO - ✅ Trainer initialized successfully
+2025-02-01 21:53:59,743 - main - INFO - ✅ Zero-Trust controller initialized successfully
+2025-02-01 21:53:59,743 - main - INFO - ✅ Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:53:59,743 - main - INFO - 
+🚀 Starting Epoch 1/2
+2025-02-01 21:54:03,333 - main - INFO - 📊 Generating plots...
+2025-02-01 21:54:03,767 - main - ERROR - ❌ Error in epoch 1: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 346, in train
+    analyzer.plot_resource_usage()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:54:03,769 - main - INFO - 
+🚀 Starting Epoch 2/2
+2025-02-01 21:54:07,283 - main - INFO - 📊 Generating plots...
+2025-02-01 21:54:07,641 - main - ERROR - ❌ Error in epoch 2: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 346, in train
+    analyzer.plot_resource_usage()
+AttributeError: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:54:07,642 - main - INFO - 
+✅ Training completed. Generating final plots and report...
+2025-02-01 21:54:07,955 - main - ERROR - ❌ Error generating final plots and report: 'PerformanceAnalyzer' object has no attribute 'plot_resource_usage'
+2025-02-01 21:54:07,955 - main - INFO - 🎉 Training completed successfully!
+2025-02-01 21:57:36,652 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 21:57:36,652 - main - INFO - 🚀 Starting CasNet application
+2025-02-01 21:57:36,655 - main - INFO - ✅ Configuration loaded successfully
+2025-02-01 21:57:36,700 - main - INFO - 📊 Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 21:57:36,701 - main - INFO - ✅ Scaler saved successfully
+2025-02-01 21:57:36,702 - main - INFO - ✅ Data loaders created successfully
+2025-02-01 21:57:36,739 - main - INFO - ✅ Model initialized successfully
+2025-02-01 21:57:38,185 - main - INFO - ✅ Trainer initialized successfully
+2025-02-01 21:57:38,185 - main - INFO - ✅ Zero-Trust controller initialized successfully
+2025-02-01 21:57:38,185 - main - INFO - ✅ Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:57:38,185 - main - INFO - 
+🚀 Starting Epoch 1/2
+2025-02-01 21:57:41,767 - main - INFO - 📊 Generating plots...
+2025-02-01 21:57:42,548 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:57:42,548 - main - INFO - 📈 Epoch 1/2 Results:
+  🔹 Loss: 1.2281
+  🔹 Validation Accuracy: 0.3846
+  🔹 TPR: 0.0000
+  🔹 FPR: 0.5200
+  ⏳ Time: 2.97s
+2025-02-01 21:57:42,548 - main - INFO - 
+🚀 Starting Epoch 2/2
+2025-02-01 21:57:46,050 - main - INFO - 📊 Generating plots...
+2025-02-01 21:57:47,002 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 21:57:47,002 - main - INFO - 📈 Epoch 2/2 Results:
+  🔹 Loss: 1.1987
+  🔹 Validation Accuracy: 0.3846
+  🔹 TPR: 0.0000
+  🔹 FPR: 0.5200
+  ⏳ Time: 2.89s
+2025-02-01 21:57:47,002 - main - INFO - 
+✅ Training completed. Generating final plots and report...
+2025-02-01 21:57:48,015 - main - INFO - 
+🖼️ Generated plot files:
+2025-02-01 21:57:48,016 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 21:57:48,016 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 21:57:48,016 - main - INFO - 🎉 Training completed successfully!
+2025-02-01 22:04:42,710 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 22:04:42,711 - main - INFO - 🚀 Starting CasNet application
+2025-02-01 22:04:42,714 - main - INFO - ✅ Configuration loaded successfully
+2025-02-01 22:04:42,759 - main - INFO - 📊 Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 22:04:42,774 - main - INFO - ✅ Scaler saved successfully
+2025-02-01 22:04:42,775 - main - INFO - ✅ Data loaders created successfully
+2025-02-01 22:04:42,811 - main - INFO - ✅ Model initialized successfully
+2025-02-01 22:04:44,268 - main - INFO - ✅ Trainer initialized successfully
+2025-02-01 22:04:44,268 - main - INFO - ✅ Zero-Trust controller initialized successfully
+2025-02-01 22:04:44,268 - main - INFO - ✅ Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:04:44,269 - main - INFO - 
+🚀 Starting Epoch 1/2
+2025-02-01 22:04:47,793 - main - INFO - 📊 Generating plots...
+2025-02-01 22:04:48,528 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:04:48,528 - main - INFO - 📈 Epoch 1/2 Results:
+  🔹 Loss: 1.0487
+  🔹 Validation Accuracy: 0.5000
+  🔹 TPR: 0.0000
+  🔹 FPR: 0.3600
+  ⏳ Time: 2.92s
+2025-02-01 22:04:48,528 - main - INFO - 
+🚀 Starting Epoch 2/2
+2025-02-01 22:04:52,022 - main - INFO - 📊 Generating plots...
+2025-02-01 22:04:52,742 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:04:52,743 - main - INFO - 📈 Epoch 2/2 Results:
+  🔹 Loss: 1.0746
+  🔹 Validation Accuracy: 0.5000
+  🔹 TPR: 0.0000
+  🔹 FPR: 0.3600
+  ⏳ Time: 2.87s
+2025-02-01 22:04:52,743 - main - INFO - 
+✅ Training completed. Generating final plots and report...
+2025-02-01 22:04:53,852 - main - INFO - 
+🖼️ Generated plot files:
+2025-02-01 22:04:53,852 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 22:04:53,852 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 22:04:53,852 - main - INFO - 🎉 Training completed successfully!
+2025-02-01 22:12:33,673 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 22:12:33,673 - main - INFO - 🚀 Starting CasNet application
+2025-02-01 22:12:33,676 - main - INFO - ✅ Configuration loaded successfully
+2025-02-01 22:12:33,725 - main - INFO - 📊 Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 22:12:33,734 - main - INFO - ✅ Scaler saved successfully
+2025-02-01 22:12:33,735 - main - INFO - ✅ Data loaders created successfully
+2025-02-01 22:12:33,767 - main - INFO - ✅ Model initialized successfully
+2025-02-01 22:12:35,229 - main - INFO - ✅ Trainer initialized successfully
+2025-02-01 22:12:35,229 - main - INFO - ✅ Zero-Trust controller initialized successfully
+2025-02-01 22:12:35,229 - main - INFO - ✅ Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:12:35,229 - main - INFO - 
+🚀 Starting Epoch 1/2
+2025-02-01 22:12:38,640 - main - INFO - 📊 Generating plots...
+2025-02-01 22:12:39,440 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:12:39,440 - main - INFO - 📈 Epoch 1/2 Results:
+  🔹 Loss: 0.9393
+  🔹 Validation Accuracy: 0.6923
+  🔹 TPR: 0.0000
+  🔹 FPR: 0.2800
+  ⏳ Time: 2.83s
+2025-02-01 22:12:39,440 - main - INFO - 
+🚀 Starting Epoch 2/2
+2025-02-01 22:12:42,790 - main - INFO - 📊 Generating plots...
+2025-02-01 22:12:43,445 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:12:43,445 - main - INFO - 📈 Epoch 2/2 Results:
+  🔹 Loss: 0.9039
+  🔹 Validation Accuracy: 0.6923
+  🔹 TPR: 0.0000
+  🔹 FPR: 0.2800
+  ⏳ Time: 2.77s
+2025-02-01 22:12:43,445 - main - INFO - 
+✅ Training completed. Generating final plots and report...
+2025-02-01 22:12:44,599 - main - INFO - 
+🖼️ Generated plot files:
+2025-02-01 22:12:44,600 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 22:12:44,600 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 22:12:44,600 - main - INFO - 🎉 Training completed successfully!
+2025-02-01 22:19:06,152 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 22:19:06,152 - main - INFO - 🚀 Starting CasNet application
+2025-02-01 22:19:06,156 - main - INFO - ✅ Configuration loaded successfully
+2025-02-01 22:19:06,201 - main - INFO - 📊 Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 22:19:06,202 - main - INFO - ✅ Scaler saved successfully
+2025-02-01 22:19:06,202 - main - INFO - ✅ Data loaders created successfully
+2025-02-01 22:19:06,234 - main - INFO - ✅ Model initialized successfully
+2025-02-01 22:19:07,674 - main - INFO - ✅ Trainer initialized successfully
+2025-02-01 22:19:07,674 - main - INFO - ✅ Zero-Trust controller initialized successfully
+2025-02-01 22:19:07,674 - main - INFO - 📊 Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:19:07,674 - main - INFO - 
+🚀 Starting Epoch 1/2
+2025-02-01 22:19:11,804 - main - INFO - 📈 Generating plots...
+2025-02-01 22:19:12,567 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:19:12,567 - main - INFO - ✅ Epoch 1/2 Results:
+  📉 Loss: 1.1962
+  🎯 Validation Accuracy: 0.3846
+  🔷 TPR: 0.0000
+  🔴 FPR: 0.4400
+  ⏳ Time: 3.42s
+2025-02-01 22:19:12,567 - main - INFO - 
+🚀 Starting Epoch 2/2
+2025-02-01 22:19:16,188 - main - INFO - 📈 Generating plots...
+2025-02-01 22:19:17,140 - main - INFO - ✅ Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:19:17,140 - main - INFO - ✅ Epoch 2/2 Results:
+  📉 Loss: 1.1769
+  🎯 Validation Accuracy: 0.3846
+  🔷 TPR: 0.0000
+  🔴 FPR: 0.4400
+  ⏳ Time: 2.97s
+2025-02-01 22:19:17,140 - main - INFO - 
+✅ Training completed. Generating final plots and report...
+2025-02-01 22:19:18,145 - main - INFO - 
+📂 Generated plot files:
+2025-02-01 22:19:18,146 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 22:19:18,146 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 22:19:18,146 - main - INFO - 🎉 Training completed successfully!
+2025-02-01 22:39:01,647 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 22:39:01,647 - main - INFO - Starting CasNet application
+2025-02-01 22:39:01,650 - main - INFO - Configuration loaded successfully
+2025-02-01 22:39:01,695 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 22:39:01,716 - main - INFO - Scaler saved successfully
+2025-02-01 22:39:01,717 - main - INFO - Data loaders created successfully
+2025-02-01 22:39:01,750 - main - INFO - Model initialized successfully
+2025-02-01 22:39:01,751 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-01 22:39:01,751 - main - INFO - Total number of parameters: 174
+2025-02-01 22:39:03,182 - main - INFO - Trainer initialized successfully
+2025-02-01 22:39:03,182 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 22:39:03,183 - main - ERROR - Fatal error in main execution: name 'PerformanceAnalyzer' is not defined
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 217, in main
+    performance_summary = train(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 46, in train
+    analyzer = PerformanceAnalyzer(save_dir=plots_dir)
+NameError: name 'PerformanceAnalyzer' is not defined
+2025-02-01 22:41:53,567 - main - INFO - Logger 'main' initialized with level 20
+2025-02-01 22:41:53,567 - main - INFO - Starting CasNet application
+2025-02-01 22:41:53,570 - main - INFO - Configuration loaded successfully
+2025-02-01 22:41:53,615 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-01 22:41:53,616 - main - INFO - Scaler saved successfully
+2025-02-01 22:41:53,616 - main - INFO - Data loaders created successfully
+2025-02-01 22:41:53,648 - main - INFO - Model initialized successfully
+2025-02-01 22:41:53,648 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-01 22:41:53,649 - main - INFO - Total number of parameters: 174
+2025-02-01 22:41:55,087 - main - INFO - Trainer initialized successfully
+2025-02-01 22:41:55,087 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-01 22:41:55,087 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:41:55,087 - main - INFO - 
+Starting Epoch 1/2
+2025-02-01 22:41:58,623 - main - INFO - Generating plots for current epoch...
+2025-02-01 22:41:59,358 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:41:59,358 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.1579
+  Validation Accuracy: 0.4231
+  TPR: 0.0000
+  FPR: 0.2400
+  Time: 2.94s
+2025-02-01 22:41:59,358 - main - ERROR - Error in epoch 1: CheckpointManager.save_checkpoint() missing 1 required positional argument: 'metrics'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 106, in train
+    trainer.checkpoint_manager.save_checkpoint(
+TypeError: CheckpointManager.save_checkpoint() missing 1 required positional argument: 'metrics'
+2025-02-01 22:41:59,358 - main - INFO - 
+Starting Epoch 2/2
+2025-02-01 22:42:03,313 - main - INFO - Generating plots for current epoch...
+2025-02-01 22:42:04,244 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-01 22:42:04,245 - main - INFO - Epoch 2/2 Results:
+  Loss: 1.1700
+  Validation Accuracy: 0.4231
+  TPR: 0.0000
+  FPR: 0.2400
+  Time: 3.37s
+2025-02-01 22:42:04,245 - main - ERROR - Error in epoch 2: CheckpointManager.save_checkpoint() missing 1 required positional argument: 'metrics'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 106, in train
+    trainer.checkpoint_manager.save_checkpoint(
+TypeError: CheckpointManager.save_checkpoint() missing 1 required positional argument: 'metrics'
+2025-02-01 22:42:04,245 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-01 22:42:05,580 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-01 22:42:05,580 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-01 22:42:05,581 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-01 22:42:05,581 - main - INFO - Training completed successfully!
+2025-02-01 22:42:05,581 - main - INFO - Performance Summary:
+2025-02-01 22:42:05,581 - main - INFO - {'Final Train Loss': 1.1699905879562094, 'Final Val Loss': 1.1507629145396536, 'Final Train Accuracy': 0.0, 'Final Val Accuracy': 0.4230769230769231, 'Total Training Time (s)': 6.306657552719116, 'Avg Epoch Time (s)': 3.153328776359558, 'Peak GPU Memory (MB)': 0.0205078125}
+2025-02-02 01:59:26,025 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 01:59:26,026 - main - INFO - Starting CasNet application
+2025-02-02 01:59:26,029 - main - INFO - Configuration loaded successfully
+2025-02-02 01:59:26,076 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 01:59:26,083 - main - INFO - Scaler saved successfully
+2025-02-02 01:59:26,084 - main - INFO - Data loaders created successfully
+2025-02-02 01:59:26,113 - main - INFO - Model initialized successfully
+2025-02-02 01:59:26,114 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 01:59:26,114 - main - INFO - Total number of parameters: 174
+2025-02-02 01:59:27,568 - main - INFO - Trainer initialized successfully
+2025-02-02 01:59:27,568 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 01:59:27,568 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 01:59:27,568 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 01:59:31,019 - main - INFO - Generating plots for current epoch...
+2025-02-02 01:59:31,775 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 01:59:31,775 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.1031
+  Validation Accuracy: 0.3462
+  TPR: 1.0000
+  FPR: 0.4800
+  Time: 2.87s
+2025-02-02 01:59:31,779 - main - INFO - Model checkpoint saved for epoch 1
+2025-02-02 01:59:31,779 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 01:59:35,184 - main - INFO - Generating plots for current epoch...
+2025-02-02 01:59:36,108 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 01:59:36,108 - main - INFO - Epoch 2/2 Results:
+  Loss: 1.1167
+  Validation Accuracy: 0.3462
+  TPR: 1.0000
+  FPR: 0.4800
+  Time: 2.81s
+2025-02-02 01:59:36,115 - main - INFO - Model checkpoint saved for epoch 2
+2025-02-02 01:59:36,115 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 01:59:37,153 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 01:59:37,153 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 01:59:37,154 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 01:59:37,154 - main - INFO - Training completed successfully!
+2025-02-02 01:59:37,154 - main - INFO - Performance Summary:
+2025-02-02 01:59:37,154 - main - INFO - {'Final Train Loss': 1.1167388930945685, 'Final Val Loss': 1.1011251980590093, 'Final Train Accuracy': 0.0, 'Final Val Accuracy': 0.34615384615384615, 'Total Training Time (s)': 5.67983865737915, 'Avg Epoch Time (s)': 2.839919328689575, 'Peak GPU Memory (MB)': 0.0205078125}
+2025-02-02 02:12:12,966 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:12:12,966 - main - INFO - Starting CasNet application
+2025-02-02 02:12:12,969 - main - INFO - Configuration loaded successfully
+2025-02-02 02:12:13,013 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:12:13,023 - main - INFO - Scaler saved successfully
+2025-02-02 02:12:13,024 - main - INFO - Data loaders created successfully
+2025-02-02 02:12:13,054 - main - INFO - Model initialized successfully
+2025-02-02 02:12:13,055 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:12:13,055 - main - INFO - Total number of parameters: 174
+2025-02-02 02:12:14,507 - main - INFO - Trainer initialized successfully
+2025-02-02 02:12:14,507 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:12:14,507 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:12:14,507 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:12:18,541 - main - INFO - Generating plots for current epoch...
+2025-02-02 02:12:19,267 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:12:19,267 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.2530
+  Validation Accuracy: 0.2308
+  TPR: 0.0000
+  FPR: 0.1200
+  Time: 3.43s
+2025-02-02 02:12:19,271 - main - INFO - Model checkpoint saved for epoch 1
+2025-02-02 02:12:19,271 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:12:22,820 - main - INFO - Generating plots for current epoch...
+2025-02-02 02:12:23,456 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:12:23,457 - main - INFO - Epoch 2/2 Results:
+  Loss: 1.2298
+  Validation Accuracy: 0.2308
+  TPR: 0.0000
+  FPR: 0.1200
+  Time: 2.94s
+2025-02-02 02:12:23,460 - main - INFO - Model checkpoint saved for epoch 2
+2025-02-02 02:12:23,460 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:12:24,591 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:12:24,592 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:12:24,592 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:12:24,592 - main - INFO - Training completed successfully!
+2025-02-02 02:12:24,592 - main - INFO - Performance Summary:
+2025-02-02 02:12:24,592 - main - INFO - {'Final Train Loss': 1.2298027456132, 'Final Val Loss': 1.2843651497893411, 'Final Train Accuracy': 0.0, 'Final Val Accuracy': 0.23076923076923078, 'Total Training Time (s)': 6.366224527359009, 'Avg Epoch Time (s)': 3.1831122636795044, 'Peak GPU Memory (MB)': 0.0205078125}
+2025-02-02 02:13:09,251 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:13:09,251 - main - INFO - Starting CasNet application
+2025-02-02 02:13:09,254 - main - INFO - Configuration loaded successfully
+2025-02-02 02:13:09,298 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:13:09,299 - main - INFO - Scaler saved successfully
+2025-02-02 02:13:09,300 - main - INFO - Data loaders created successfully
+2025-02-02 02:13:09,330 - main - INFO - Model initialized successfully
+2025-02-02 02:13:09,331 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:13:09,331 - main - INFO - Total number of parameters: 174
+2025-02-02 02:13:10,835 - main - INFO - Trainer initialized successfully
+2025-02-02 02:13:10,835 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:13:10,835 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:13:10,835 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:13:14,439 - main - INFO - Generating plots for current epoch...
+2025-02-02 02:13:15,159 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:13:15,159 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.1547
+  Validation Accuracy: 0.4615
+  TPR: 0.0000
+  FPR: 0.1600
+  Time: 3.00s
+2025-02-02 02:13:15,163 - main - INFO - Model checkpoint saved for epoch 1
+2025-02-02 02:13:15,163 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:13:18,682 - main - INFO - Generating plots for current epoch...
+2025-02-02 02:13:19,378 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:13:19,378 - main - INFO - Epoch 2/2 Results:
+  Loss: 1.1450
+  Validation Accuracy: 0.4615
+  TPR: 0.0000
+  FPR: 0.1600
+  Time: 2.92s
+2025-02-02 02:13:19,383 - main - INFO - Model checkpoint saved for epoch 2
+2025-02-02 02:13:19,383 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:13:20,646 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:13:20,647 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:13:20,647 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:13:20,647 - main - INFO - Training completed successfully!
+2025-02-02 02:13:20,647 - main - INFO - Performance Summary:
+2025-02-02 02:13:20,647 - main - INFO - {'Final Train Loss': 1.1450069177235827, 'Final Val Loss': 1.0258130831011936, 'Final Train Accuracy': 0.0, 'Final Val Accuracy': 0.46153846153846156, 'Total Training Time (s)': 5.911418914794922, 'Avg Epoch Time (s)': 2.955709457397461, 'Peak GPU Memory (MB)': 0.0205078125}
+2025-02-02 02:16:30,073 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:16:30,073 - main - INFO - Starting CasNet application
+2025-02-02 02:16:30,076 - main - INFO - Configuration loaded successfully
+2025-02-02 02:16:30,120 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:16:30,135 - main - INFO - Scaler saved successfully
+2025-02-02 02:16:30,135 - main - INFO - Data loaders created successfully
+2025-02-02 02:16:30,166 - main - INFO - Model initialized successfully
+2025-02-02 02:16:30,166 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:16:30,166 - main - INFO - Total number of parameters: 174
+2025-02-02 02:16:31,641 - main - INFO - Trainer initialized successfully
+2025-02-02 02:16:31,641 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:16:31,642 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:16:31,642 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:16:32,116 - main - ERROR - Error in epoch 1: name 'self' is not defined
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 63, in train
+    for name, param in self.model.named_parameters():
+NameError: name 'self' is not defined
+2025-02-02 02:16:32,118 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:16:32,504 - main - ERROR - Error in epoch 2: name 'self' is not defined
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 63, in train
+    for name, param in self.model.named_parameters():
+NameError: name 'self' is not defined
+2025-02-02 02:16:32,506 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:16:33,275 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:16:33,276 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:16:33,276 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:16:33,276 - main - INFO - Training completed successfully!
+2025-02-02 02:16:33,276 - main - INFO - Performance Summary:
+2025-02-02 02:16:33,276 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:16:58,939 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:16:58,940 - main - INFO - Starting CasNet application
+2025-02-02 02:16:58,943 - main - INFO - Configuration loaded successfully
+2025-02-02 02:16:58,984 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:16:58,993 - main - INFO - Scaler saved successfully
+2025-02-02 02:16:58,993 - main - INFO - Data loaders created successfully
+2025-02-02 02:16:59,021 - main - INFO - Model initialized successfully
+2025-02-02 02:16:59,022 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:16:59,022 - main - INFO - Total number of parameters: 174
+2025-02-02 02:17:00,480 - main - INFO - Trainer initialized successfully
+2025-02-02 02:17:00,480 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:17:00,480 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:17:00,480 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:17:04,465 - main - INFO - Generating plots for current epoch...
+2025-02-02 02:17:05,243 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:17:05,243 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.2090
+  Validation Accuracy: 0.4231
+  TPR: 0.0000
+  FPR: 0.2000
+  Time: 3.38s
+2025-02-02 02:17:05,247 - main - INFO - Model checkpoint saved for epoch 1
+2025-02-02 02:17:05,248 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:17:08,885 - main - INFO - Generating plots for current epoch...
+2025-02-02 02:17:09,536 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:17:09,536 - main - INFO - Epoch 2/2 Results:
+  Loss: 1.2104
+  Validation Accuracy: 0.4231
+  TPR: 0.0000
+  FPR: 0.2000
+  Time: 2.93s
+2025-02-02 02:17:09,540 - main - INFO - Model checkpoint saved for epoch 2
+2025-02-02 02:17:09,540 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:17:10,783 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:17:10,784 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:17:10,784 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:17:10,784 - main - INFO - Training completed successfully!
+2025-02-02 02:17:10,784 - main - INFO - Performance Summary:
+2025-02-02 02:17:10,784 - main - INFO - {'Final Train Loss': 1.2104212594420745, 'Final Val Loss': 1.1556532395082046, 'Final Train Accuracy': 0.0, 'Final Val Accuracy': 0.4230769230769231, 'Total Training Time (s)': 6.308853626251221, 'Avg Epoch Time (s)': 3.1544268131256104, 'Peak GPU Memory (MB)': 0.0205078125}
+2025-02-02 02:23:14,386 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:23:14,386 - main - INFO - Starting CasNet application
+2025-02-02 02:23:14,389 - main - INFO - Configuration loaded successfully
+2025-02-02 02:23:14,433 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:23:14,476 - main - INFO - Scaler saved successfully
+2025-02-02 02:23:14,477 - main - INFO - Data loaders created successfully
+2025-02-02 02:23:14,508 - main - INFO - Model initialized successfully
+2025-02-02 02:23:14,508 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:23:14,509 - main - INFO - Total number of parameters: 174
+2025-02-02 02:23:15,991 - main - INFO - Trainer initialized successfully
+2025-02-02 02:23:15,991 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:23:15,991 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:23:15,991 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:23:16,435 - main - ERROR - Error in epoch 1: element 0 of tensors does not require grad and does not have a grad_fn
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 62, in train
+    loss.backward()
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/_tensor.py", line 626, in backward
+    torch.autograd.backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/graph.py", line 823, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn
+2025-02-02 02:23:16,437 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:23:16,860 - main - ERROR - Error in epoch 2: element 0 of tensors does not require grad and does not have a grad_fn
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 62, in train
+    loss.backward()
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/_tensor.py", line 626, in backward
+    torch.autograd.backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/graph.py", line 823, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn
+2025-02-02 02:23:16,861 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:23:17,597 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:23:17,597 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:23:17,598 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:23:17,598 - main - INFO - Training completed successfully!
+2025-02-02 02:23:17,598 - main - INFO - Performance Summary:
+2025-02-02 02:23:17,598 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:26:00,318 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:26:00,318 - main - INFO - Starting CasNet application
+2025-02-02 02:26:00,322 - main - INFO - Configuration loaded successfully
+2025-02-02 02:26:00,365 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:26:00,402 - main - INFO - Scaler saved successfully
+2025-02-02 02:26:00,402 - main - INFO - Data loaders created successfully
+2025-02-02 02:26:00,433 - main - INFO - Model initialized successfully
+2025-02-02 02:26:00,433 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:26:00,433 - main - INFO - Total number of parameters: 174
+2025-02-02 02:26:01,861 - main - INFO - Trainer initialized successfully
+2025-02-02 02:26:01,862 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:26:01,862 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:26:01,862 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:26:02,300 - main - ERROR - Error in epoch 1: element 0 of tensors does not require grad and does not have a grad_fn
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 62, in train
+    loss.backward()
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/_tensor.py", line 626, in backward
+    torch.autograd.backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/graph.py", line 823, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn
+2025-02-02 02:26:02,301 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:26:02,672 - main - ERROR - Error in epoch 2: element 0 of tensors does not require grad and does not have a grad_fn
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 62, in train
+    loss.backward()
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/_tensor.py", line 626, in backward
+    torch.autograd.backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/autograd/graph.py", line 823, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn
+2025-02-02 02:26:02,673 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:26:03,363 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:26:03,364 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:26:03,364 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:26:03,364 - main - INFO - Training completed successfully!
+2025-02-02 02:26:03,364 - main - INFO - Performance Summary:
+2025-02-02 02:26:03,364 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:27:24,228 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:27:24,228 - main - INFO - Starting CasNet application
+2025-02-02 02:27:24,231 - main - INFO - Configuration loaded successfully
+2025-02-02 02:27:24,274 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:27:24,276 - main - INFO - Scaler saved successfully
+2025-02-02 02:27:24,276 - main - INFO - Data loaders created successfully
+2025-02-02 02:27:24,308 - main - INFO - Model initialized successfully
+2025-02-02 02:27:24,308 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:27:24,308 - main - INFO - Total number of parameters: 174
+2025-02-02 02:27:25,748 - main - INFO - Trainer initialized successfully
+2025-02-02 02:27:25,748 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:27:25,748 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:27:25,749 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:36:55,915 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:36:55,915 - main - INFO - Starting CasNet application
+2025-02-02 02:36:55,918 - main - INFO - Configuration loaded successfully
+2025-02-02 02:36:55,962 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:36:55,978 - main - INFO - Scaler saved successfully
+2025-02-02 02:36:55,979 - main - INFO - Data loaders created successfully
+2025-02-02 02:36:56,006 - main - ERROR - Fatal error in main execution: map() missing 2 required positional arguments: 'observables' and 'device'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 195, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 112, in __init__
+    self.qnode = make_cv_qnode(n_layers, layer_widths, out_classes, cutoff, batched=True)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 80, in make_cv_qnode
+    batched_circuit = qml.map(circuit, in_axes=(None, 0))
+TypeError: map() missing 2 required positional arguments: 'observables' and 'device'
+2025-02-02 02:38:05,550 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:38:05,550 - main - INFO - Starting CasNet application
+2025-02-02 02:38:05,554 - main - INFO - Configuration loaded successfully
+2025-02-02 02:38:05,597 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:38:05,632 - main - INFO - Scaler saved successfully
+2025-02-02 02:38:05,632 - main - INFO - Data loaders created successfully
+2025-02-02 02:38:05,660 - main - ERROR - Fatal error in main execution: Could not create QNodes. Some or all observables are not valid.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 195, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 110, in __init__
+    self.qnode = make_cv_qnode(n_layers, layer_widths, out_classes, cutoff, batched=True)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 79, in make_cv_qnode
+    batched_circuit = qml.map(circuit, in_axes=(None, 0), observables=obs, device=dev)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 125, in map
+    raise ValueError("Could not create QNodes. Some or all observables are not valid.")
+ValueError: Could not create QNodes. Some or all observables are not valid.
+2025-02-02 02:38:57,694 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:38:57,694 - main - INFO - Starting CasNet application
+2025-02-02 02:38:57,697 - main - INFO - Configuration loaded successfully
+2025-02-02 02:38:57,741 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:38:57,780 - main - INFO - Scaler saved successfully
+2025-02-02 02:38:57,780 - main - INFO - Data loaders created successfully
+2025-02-02 02:38:57,809 - main - INFO - Model initialized successfully
+2025-02-02 02:38:57,810 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:38:57,810 - main - INFO - Total number of parameters: 174
+2025-02-02 02:38:59,238 - main - INFO - Trainer initialized successfully
+2025-02-02 02:38:59,238 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:38:59,238 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:38:59,238 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:38:59,346 - main - ERROR - Error in epoch 1: make_cv_qnode.<locals>.circuit() got an unexpected keyword argument 'wires'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(all_params, x_batch)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() got an unexpected keyword argument 'wires'
+2025-02-02 02:38:59,348 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:38:59,431 - main - ERROR - Error in epoch 2: make_cv_qnode.<locals>.circuit() got an unexpected keyword argument 'wires'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(all_params, x_batch)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() got an unexpected keyword argument 'wires'
+2025-02-02 02:38:59,431 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:39:00,137 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:39:00,138 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:39:00,138 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:39:00,138 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 02:39:00,138 - main - INFO - Training completed successfully!
+2025-02-02 02:39:00,138 - main - INFO - Performance Summary:
+2025-02-02 02:39:00,138 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:39:00,258 - main - ERROR - Fatal error in main execution: make_cv_qnode.<locals>.circuit() got an unexpected keyword argument 'wires'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 236, in main
+    perform_final_evaluation(trainer, test_loader, zt_controller)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 261, in perform_final_evaluation
+    logits = trainer.model(batch_x)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(all_params, x_batch)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() got an unexpected keyword argument 'wires'
+2025-02-02 02:40:08,742 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:40:08,742 - main - INFO - Starting CasNet application
+2025-02-02 02:40:08,746 - main - INFO - Configuration loaded successfully
+2025-02-02 02:40:08,789 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:40:08,796 - main - INFO - Scaler saved successfully
+2025-02-02 02:40:08,797 - main - INFO - Data loaders created successfully
+2025-02-02 02:40:08,827 - main - INFO - Model initialized successfully
+2025-02-02 02:40:08,827 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:40:08,828 - main - INFO - Total number of parameters: 174
+2025-02-02 02:40:10,246 - main - INFO - Trainer initialized successfully
+2025-02-02 02:40:10,246 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:40:10,246 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:40:10,246 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:40:10,362 - main - ERROR - Error in epoch 1: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'x_input'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(all_params, x_batch)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'x_input'
+2025-02-02 02:40:10,365 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:40:10,454 - main - ERROR - Error in epoch 2: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'x_input'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(all_params, x_batch)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'x_input'
+2025-02-02 02:40:10,455 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:40:11,210 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:40:11,210 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:40:11,211 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:40:11,211 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 02:40:11,211 - main - INFO - Training completed successfully!
+2025-02-02 02:40:11,211 - main - INFO - Performance Summary:
+2025-02-02 02:40:11,211 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:40:11,344 - main - ERROR - Fatal error in main execution: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'x_input'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 236, in main
+    perform_final_evaluation(trainer, test_loader, zt_controller)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 261, in perform_final_evaluation
+    logits = trainer.model(batch_x)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(all_params, x_batch)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'x_input'
+2025-02-02 02:42:08,518 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:42:08,519 - main - INFO - Starting CasNet application
+2025-02-02 02:42:08,522 - main - INFO - Configuration loaded successfully
+2025-02-02 02:42:08,566 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:42:08,573 - main - INFO - Scaler saved successfully
+2025-02-02 02:42:08,573 - main - INFO - Data loaders created successfully
+2025-02-02 02:42:08,603 - main - INFO - Model initialized successfully
+2025-02-02 02:42:08,603 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:42:08,603 - main - INFO - Total number of parameters: 174
+2025-02-02 02:42:10,037 - main - INFO - Trainer initialized successfully
+2025-02-02 02:42:10,037 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:42:10,037 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:42:10,037 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:42:10,147 - main - ERROR - Error in epoch 1: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(x_batch,all_params)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:42:10,149 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:42:10,240 - main - ERROR - Error in epoch 2: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(x_batch,all_params)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:42:10,241 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:42:10,971 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:42:10,971 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:42:10,971 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:42:10,971 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 02:42:10,972 - main - INFO - Training completed successfully!
+2025-02-02 02:42:10,972 - main - INFO - Performance Summary:
+2025-02-02 02:42:10,972 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:42:11,097 - main - ERROR - Fatal error in main execution: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 236, in main
+    perform_final_evaluation(trainer, test_loader, zt_controller)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 261, in perform_final_evaluation
+    logits = trainer.model(batch_x)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 155, in forward
+    meas = self.qnode(x_batch,all_params)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:43:08,597 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:43:08,597 - main - INFO - Starting CasNet application
+2025-02-02 02:43:08,601 - main - INFO - Configuration loaded successfully
+2025-02-02 02:43:08,644 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:43:08,659 - main - INFO - Scaler saved successfully
+2025-02-02 02:43:08,660 - main - INFO - Data loaders created successfully
+2025-02-02 02:43:08,689 - main - INFO - Model initialized successfully
+2025-02-02 02:43:08,689 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:43:08,689 - main - INFO - Total number of parameters: 174
+2025-02-02 02:43:10,118 - main - INFO - Trainer initialized successfully
+2025-02-02 02:43:10,118 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:43:10,119 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:43:10,119 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:43:10,232 - main - ERROR - Error in epoch 1: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 156, in forward
+    meas = self.qnode(x_batch, all_params)  # x_batch is now the first argument
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:43:10,234 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:43:10,319 - main - ERROR - Error in epoch 2: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 156, in forward
+    meas = self.qnode(x_batch, all_params)  # x_batch is now the first argument
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:43:10,320 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:43:11,038 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:43:11,038 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:43:11,038 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:43:11,038 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 02:43:11,038 - main - INFO - Training completed successfully!
+2025-02-02 02:43:11,039 - main - INFO - Performance Summary:
+2025-02-02 02:43:11,039 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:43:11,161 - main - ERROR - Fatal error in main execution: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 236, in main
+    perform_final_evaluation(trainer, test_loader, zt_controller)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 261, in perform_final_evaluation
+    logits = trainer.model(batch_x)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 156, in forward
+    meas = self.qnode(x_batch, all_params)  # x_batch is now the first argument
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:45:10,429 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 02:45:10,429 - main - INFO - Starting CasNet application
+2025-02-02 02:45:10,433 - main - INFO - Configuration loaded successfully
+2025-02-02 02:45:10,478 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 02:45:10,493 - main - INFO - Scaler saved successfully
+2025-02-02 02:45:10,494 - main - INFO - Data loaders created successfully
+2025-02-02 02:45:10,523 - main - INFO - Model initialized successfully
+2025-02-02 02:45:10,524 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 02:45:10,524 - main - INFO - Total number of parameters: 174
+2025-02-02 02:45:11,949 - main - INFO - Trainer initialized successfully
+2025-02-02 02:45:11,949 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 02:45:11,949 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 02:45:11,949 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 02:45:12,079 - main - ERROR - Error in epoch 1: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 154, in forward
+    meas = self.qnode(x_batch, all_params)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:45:12,081 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 02:45:12,170 - main - ERROR - Error in epoch 2: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 60, in train
+    output = model(data)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 154, in forward
+    meas = self.qnode(x_batch, all_params)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 02:45:12,170 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 02:45:12,907 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 02:45:12,907 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 02:45:12,907 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 02:45:12,908 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 02:45:12,908 - main - INFO - Training completed successfully!
+2025-02-02 02:45:12,908 - main - INFO - Performance Summary:
+2025-02-02 02:45:12,908 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 02:45:13,049 - main - ERROR - Fatal error in main execution: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 236, in main
+    perform_final_evaluation(trainer, test_loader, zt_controller)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 261, in perform_final_evaluation
+    logits = trainer.model(batch_x)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 154, in forward
+    meas = self.qnode(x_batch, all_params)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 282, in __call__
+    results = self.evaluate(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/qnode_collection.py", line 238, in evaluate
+    results.append(q(*args, **kwargs))
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/collections/map.py", line 139, in circuit
+    template(params, wires=_wires, **circuit_kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 842, in __call__
+    self.construct(args, kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 751, in construct
+    self._tape = make_qscript(self.func)(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/tape/qscript.py", line 1371, in wrapper
+    result = fn(*args, **kwargs)
+TypeError: make_cv_qnode.<locals>.circuit() missing 1 required positional argument: 'all_params'
+2025-02-02 03:28:38,489 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 03:28:38,489 - main - INFO - Starting CasNet application
+2025-02-02 03:28:38,492 - main - INFO - Configuration loaded successfully
+2025-02-02 03:28:38,538 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 03:28:38,555 - main - INFO - Scaler saved successfully
+2025-02-02 03:28:38,555 - main - INFO - Data loaders created successfully
+2025-02-02 03:28:38,584 - main - INFO - Model initialized successfully
+2025-02-02 03:28:38,585 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 03:28:38,585 - main - INFO - Total number of parameters: 174
+2025-02-02 03:28:40,013 - main - INFO - Trainer initialized successfully
+2025-02-02 03:28:40,013 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 03:28:40,014 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 03:28:40,014 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 03:28:40,219 - main - ERROR - Error in epoch 1: Expected input batch_size (1) to match target batch_size (12).
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 61, in train
+    loss = trainer.criterion(output, target)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+ValueError: Expected input batch_size (1) to match target batch_size (12).
+2025-02-02 03:28:40,221 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 03:28:40,394 - main - ERROR - Error in epoch 2: Expected input batch_size (1) to match target batch_size (12).
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 61, in train
+    loss = trainer.criterion(output, target)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+ValueError: Expected input batch_size (1) to match target batch_size (12).
+2025-02-02 03:28:40,395 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 03:28:41,104 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 03:28:41,105 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 03:28:41,105 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 03:28:41,105 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 03:28:41,105 - main - INFO - Training completed successfully!
+2025-02-02 03:28:41,105 - main - INFO - Performance Summary:
+2025-02-02 03:28:41,105 - main - INFO - {'Final Train Loss': None, 'Final Val Loss': None, 'Final Train Accuracy': None, 'Final Val Accuracy': None, 'Total Training Time (s)': 0, 'Avg Epoch Time (s)': None, 'Peak GPU Memory (MB)': 0}
+2025-02-02 03:28:41,528 - main - ERROR - Fatal error in main execution: index 1 is out of bounds for dimension 0 with size 1
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 236, in main
+    perform_final_evaluation(trainer, test_loader, zt_controller)
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 267, in perform_final_evaluation
+    mal_prob = float(probs[i, 2])  # assuming index 2 corresponds to a malicious class
+IndexError: index 1 is out of bounds for dimension 0 with size 1
+2025-02-02 03:31:42,553 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 03:31:42,553 - main - INFO - Starting CasNet application
+2025-02-02 03:31:42,556 - main - INFO - Configuration loaded successfully
+2025-02-02 03:31:42,602 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 03:31:42,612 - main - INFO - Scaler saved successfully
+2025-02-02 03:31:42,613 - main - INFO - Data loaders created successfully
+2025-02-02 03:31:42,641 - main - INFO - Model initialized successfully
+2025-02-02 03:31:42,642 - main - INFO - Model architecture: CVQNNClassifier(
+  (layer_params): ParameterList(
+      (0): Object of type: ParameterList
+      (1): Object of type: ParameterList
+      (2): Object of type: ParameterList
+    (0): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 27]
+        (1): Parameter containing: [torch.float32 of size 10]
+        (2): Parameter containing: [torch.float32 of size 27]
+        (3): Parameter containing: [torch.float32 of size 10]
+    )
+    (1): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 21]
+        (1): Parameter containing: [torch.float32 of size 8]
+        (2): Parameter containing: [torch.float32 of size 21]
+        (3): Parameter containing: [torch.float32 of size 8]
+    )
+    (2): ParameterList(
+        (0): Parameter containing: [torch.float32 of size 15]
+        (1): Parameter containing: [torch.float32 of size 6]
+        (2): Parameter containing: [torch.float32 of size 15]
+        (3): Parameter containing: [torch.float32 of size 6]
+    )
+  )
+)
+2025-02-02 03:31:42,642 - main - INFO - Total number of parameters: 174
+2025-02-02 03:31:44,082 - main - INFO - Trainer initialized successfully
+2025-02-02 03:31:44,082 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 03:31:44,082 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 03:31:44,082 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 03:37:05,880 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 03:37:05,880 - main - INFO - Starting CasNet application
+2025-02-02 03:37:05,884 - main - INFO - Configuration loaded successfully
+2025-02-02 03:37:05,933 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 03:37:05,959 - main - INFO - Scaler saved successfully
+2025-02-02 03:37:05,959 - main - INFO - Data loaders created successfully
+2025-02-02 03:37:06,235 - main - ERROR - Fatal error in main execution: torch.cuda.FloatTensor is not a Module subclass
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 195, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 57, in __init__
+    self.initialize_parameters()
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 78, in initialize_parameters
+    layer = nn.ModuleDict({
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/container.py", line 498, in __init__
+    self.update(modules)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/container.py", line 570, in update
+    self[key] = module
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/container.py", line 505, in __setitem__
+    self.add_module(key, module)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/torch/nn/modules/module.py", line 645, in add_module
+    raise TypeError(f"{torch.typename(module)} is not a Module subclass")
+TypeError: torch.cuda.FloatTensor is not a Module subclass
+2025-02-02 03:39:48,182 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 03:39:48,183 - main - INFO - Starting CasNet application
+2025-02-02 03:39:48,186 - main - INFO - Configuration loaded successfully
+2025-02-02 03:39:48,231 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 03:39:48,247 - main - INFO - Scaler saved successfully
+2025-02-02 03:39:48,248 - main - INFO - Data loaders created successfully
+2025-02-02 03:39:48,552 - main - ERROR - Fatal error in main execution: DefaultGaussian.__init__() got an unexpected keyword argument 'batch_size'
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 195, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 75, in __init__
+    self.create_batched_circuit()
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 89, in create_batched_circuit
+    dev = qml.device(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/__init__.py", line 326, in device
+    dev = plugin_device_class(*args, **options)
+TypeError: DefaultGaussian.__init__() got an unexpected keyword argument 'batch_size'
+2025-02-02 03:41:51,688 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 03:41:51,689 - main - INFO - Starting CasNet application
+2025-02-02 03:41:51,692 - main - INFO - Configuration loaded successfully
+2025-02-02 03:41:51,739 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 03:41:51,747 - main - INFO - Scaler saved successfully
+2025-02-02 03:41:51,748 - main - INFO - Data loaders created successfully
+2025-02-02 03:41:52,054 - main - ERROR - Fatal error in main execution: The default.gaussian device does not support native computations with autodifferentiation frameworks.
+Traceback (most recent call last):
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/main.py", line 195, in main
+    model = CVQNNClassifier(
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 74, in __init__
+    self.create_circuit()
+  File "/home/ishihab/Documents/qnn_project-farabi_implement/src/models/classifier.py", line 97, in create_circuit
+    def circuit(x_input, params_dict):
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 434, in __init__
+    self._update_gradient_fn()
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 479, in _update_gradient_fn
+    self.gradient_fn, self.gradient_kwargs, self.device = self.get_gradient_fn(
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 524, in get_gradient_fn
+    return QNode._validate_backprop_method(device, interface)
+  File "/home/ishihab/miniconda3/envs/qnn/lib/python3.10/site-packages/pennylane/qnode.py", line 682, in _validate_backprop_method
+    raise qml.QuantumFunctionError(
+pennylane.QuantumFunctionError: The default.gaussian device does not support native computations with autodifferentiation frameworks.
+2025-02-02 03:44:31,984 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 03:44:31,984 - main - INFO - Starting CasNet application
+2025-02-02 03:44:31,988 - main - INFO - Configuration loaded successfully
+2025-02-02 03:44:32,034 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 03:44:32,041 - main - INFO - Scaler saved successfully
+2025-02-02 03:44:32,041 - main - INFO - Data loaders created successfully
+2025-02-02 03:44:32,345 - main - INFO - Model initialized successfully
+2025-02-02 03:44:32,346 - main - INFO - Model architecture: CVQNNClassifier(
+  (quantum_layers): ModuleList(
+    (0-2): 3 x CVLayer()
+  )
+)
+2025-02-02 03:44:32,346 - main - INFO - Total number of parameters: 174
+2025-02-02 03:44:33,598 - main - INFO - Trainer initialized successfully
+2025-02-02 03:44:33,599 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 03:44:33,599 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 03:44:33,599 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 03:51:47,121 - main - INFO - Generating plots for current epoch...
+2025-02-02 03:51:47,740 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 03:51:47,740 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.0365
+  Validation Accuracy: 0.4231
+  TPR: 0.0000
+  FPR: 0.4000
+  Time: 432.90s
+2025-02-02 03:51:47,749 - main - INFO - Model checkpoint saved for epoch 1
+2025-02-02 03:51:47,749 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 03:59:35,576 - main - INFO - Generating plots for current epoch...
+2025-02-02 03:59:36,253 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 03:59:36,253 - main - INFO - Epoch 2/2 Results:
+  Loss: 0.9659
+  Validation Accuracy: 0.6154
+  TPR: 0.0000
+  FPR: 0.3200
+  Time: 467.21s
+2025-02-02 03:59:36,262 - main - INFO - Model checkpoint saved for epoch 2
+2025-02-02 03:59:36,262 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 03:59:37,430 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 03:59:37,431 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 03:59:37,431 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 03:59:37,431 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 03:59:37,434 - main - INFO - Training completed successfully!
+2025-02-02 03:59:37,434 - main - INFO - Performance Summary:
+2025-02-02 03:59:37,434 - main - INFO - {'Final Train Loss': 0.9658723009957207, 'Final Val Loss': 0.842945416768392, 'Final Train Accuracy': 0.0, 'Final Val Accuracy': 0.6153846153846154, 'Total Training Time (s)': 900.1119203567505, 'Avg Epoch Time (s)': 450.05596017837524, 'Peak GPU Memory (MB)': 8.23876953125}
+2025-02-02 04:22:42,336 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 04:22:42,336 - main - INFO - Starting CasNet application
+2025-02-02 04:22:42,340 - main - INFO - Configuration loaded successfully
+2025-02-02 04:22:42,387 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 04:22:42,405 - main - INFO - Scaler saved successfully
+2025-02-02 04:22:42,405 - main - INFO - Data loaders created successfully
+2025-02-02 04:22:42,718 - main - INFO - Model initialized successfully
+2025-02-02 04:22:42,719 - main - INFO - Model architecture: CVQNNClassifier(
+  (quantum_layers): ModuleList(
+    (0-2): 3 x CVLayer()
+  )
+)
+2025-02-02 04:22:42,720 - main - INFO - Total number of parameters: 174
+2025-02-02 04:22:43,935 - main - INFO - Trainer initialized successfully
+2025-02-02 04:22:43,935 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 04:22:43,935 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 04:22:43,935 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 04:58:03,509 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 04:58:03,509 - main - INFO - Starting CasNet application
+2025-02-02 04:58:03,512 - main - INFO - Configuration loaded successfully
+2025-02-02 04:58:03,560 - main - INFO - Data prepared - Train shape: torch.Size([100, 13]), Test shape: torch.Size([26, 13])
+2025-02-02 04:58:03,584 - main - INFO - Scaler saved successfully
+2025-02-02 04:58:03,584 - main - INFO - Data loaders created successfully
+2025-02-02 04:58:03,930 - main - INFO - Model initialized successfully
+2025-02-02 04:58:03,931 - main - INFO - Model architecture: CVQNNClassifier(
+  (quantum_layers): ModuleList(
+    (0-2): 3 x CVLayer()
+  )
+)
+2025-02-02 04:58:03,932 - main - INFO - Total number of parameters: 174
+2025-02-02 04:58:05,202 - main - INFO - Trainer initialized successfully
+2025-02-02 04:58:05,202 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 04:58:05,202 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 04:58:05,202 - main - INFO - 
+Starting Epoch 1/2
+2025-02-02 05:04:56,525 - main - INFO - Generating plots for current epoch...
+2025-02-02 05:04:57,240 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 05:04:57,240 - main - INFO - Epoch 1/2 Results:
+  Loss: 1.2809
+  Validation Accuracy: 0.3846
+  TPR: 0.0000
+  FPR: 0.4000
+  Time: 410.60s
+2025-02-02 05:04:57,249 - main - INFO - Model checkpoint saved for epoch 1
+2025-02-02 05:04:57,249 - main - INFO - 
+Starting Epoch 2/2
+2025-02-02 05:11:40,288 - main - INFO - Generating plots for current epoch...
+2025-02-02 05:11:41,005 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 05:11:41,006 - main - INFO - Epoch 2/2 Results:
+  Loss: 1.2185
+  Validation Accuracy: 0.4231
+  TPR: 0.0000
+  FPR: 0.3600
+  Time: 402.30s
+2025-02-02 05:11:41,016 - main - INFO - Model checkpoint saved for epoch 2
+2025-02-02 05:11:41,016 - main - INFO - 
+Training completed. Generating final plots and performance report...
+2025-02-02 05:11:42,571 - main - INFO - Final performance report generated. Generated plot files:
+2025-02-02 05:11:42,571 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/gradient_norms.png
+2025-02-02 05:11:42,571 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/training_curves.png
+2025-02-02 05:11:42,571 - main - INFO - - /home/ishihab/Documents/qnn_project-farabi_implement/src/plots/resource_usage.png
+2025-02-02 05:11:42,574 - main - INFO - Training completed successfully!
+2025-02-02 05:11:42,574 - main - INFO - Performance Summary:
+2025-02-02 05:11:42,574 - main - INFO - {'Final Train Loss': 1.2185427745183308, 'Final Val Loss': 1.0956974029541016, 'Final Train Accuracy': 0.0, 'Final Val Accuracy': 0.4230769230769231, 'Total Training Time (s)': 812.8979241847992, 'Avg Epoch Time (s)': 406.4489620923996, 'Peak GPU Memory (MB)': 8.228515625}
+2025-02-02 05:16:44,562 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 05:16:44,563 - main - INFO - Starting CasNet application
+2025-02-02 05:16:44,566 - main - INFO - Configuration loaded successfully
+2025-02-02 05:16:44,659 - main - INFO - Data prepared - Train shape: torch.Size([8549, 13]), Test shape: torch.Size([2138, 13])
+2025-02-02 05:16:44,674 - main - INFO - Scaler saved successfully
+2025-02-02 05:16:44,675 - main - INFO - Data loaders created successfully
+2025-02-02 05:16:45,006 - main - INFO - Model initialized successfully
+2025-02-02 05:16:45,006 - main - INFO - Model architecture: CVQNNClassifier(
+  (quantum_layers): ModuleList(
+    (0-2): 3 x CVLayer()
+  )
+)
+2025-02-02 05:16:45,007 - main - INFO - Total number of parameters: 198
+2025-02-02 05:16:46,212 - main - INFO - Trainer initialized successfully
+2025-02-02 05:16:46,213 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 05:16:46,213 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 05:16:46,213 - main - INFO - 
+Starting Epoch 1/20
+2025-02-02 05:17:49,935 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 05:17:49,936 - main - INFO - Starting CasNet application
+2025-02-02 05:17:49,939 - main - INFO - Configuration loaded successfully
+2025-02-02 05:17:50,036 - main - INFO - Data prepared - Train shape: torch.Size([8549, 13]), Test shape: torch.Size([2138, 13])
+2025-02-02 05:17:50,038 - main - INFO - Scaler saved successfully
+2025-02-02 05:17:50,039 - main - INFO - Data loaders created successfully
+2025-02-02 05:17:50,365 - main - INFO - Model initialized successfully
+2025-02-02 05:17:50,365 - main - INFO - Model architecture: CVQNNClassifier(
+  (quantum_layers): ModuleList(
+    (0-2): 3 x CVLayer()
+  )
+)
+2025-02-02 05:17:50,365 - main - INFO - Total number of parameters: 198
+2025-02-02 05:17:51,578 - main - INFO - Trainer initialized successfully
+2025-02-02 05:17:51,578 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 05:17:51,578 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 05:17:51,578 - main - INFO - 
+Starting Epoch 1/20
+2025-02-02 05:27:15,828 - main - INFO - Logger 'main' initialized with level 20
+2025-02-02 05:27:15,828 - main - INFO - Starting CasNet application
+2025-02-02 05:27:15,832 - main - INFO - Configuration loaded successfully
+2025-02-02 05:27:15,926 - main - INFO - Data prepared - Train shape: torch.Size([8549, 13]), Test shape: torch.Size([2138, 13])
+2025-02-02 05:27:15,967 - main - INFO - Scaler saved successfully
+2025-02-02 05:27:15,968 - main - INFO - Data loaders created successfully
+2025-02-02 05:27:16,245 - main - INFO - Model initialized successfully
+2025-02-02 05:27:16,246 - main - INFO - Model architecture: CVQNNClassifier(
+  (quantum_layers): ModuleList(
+    (0-2): 3 x CVLayer()
+  )
+)
+2025-02-02 05:27:16,246 - main - INFO - Total number of parameters: 198
+2025-02-02 05:27:17,435 - main - INFO - Trainer initialized successfully
+2025-02-02 05:27:17,435 - main - INFO - Zero-Trust controller initialized successfully
+2025-02-02 05:27:17,435 - main - INFO - Performance analyzer initialized. Plots will be saved to: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 05:27:17,435 - main - INFO - 
+Starting Epoch 1/20
+2025-02-02 17:47:14,946 - main - INFO - Generating plots for current epoch...
+2025-02-02 17:47:16,015 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-02 17:47:16,015 - main - INFO - Epoch 1/20 Results:
+  Loss: 0.9263
+  Validation Accuracy: 0.6978
+  TPR: 0.4902
+  FPR: 0.2494
+  Time: 44348.91s
+2025-02-02 17:47:16,026 - main - INFO - Model checkpoint saved for epoch 1
+2025-02-02 17:47:16,026 - main - INFO - 
+Starting Epoch 2/20
+2025-02-03 06:15:51,566 - main - INFO - Generating plots for current epoch...
+2025-02-03 06:15:52,311 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-03 06:15:52,311 - main - INFO - Epoch 2/20 Results:
+  Loss: 0.7226
+  Validation Accuracy: 0.8003
+  TPR: 0.4444
+  FPR: 0.1547
+  Time: 44868.52s
+2025-02-03 06:15:52,320 - main - INFO - Model checkpoint saved for epoch 2
+2025-02-03 06:15:52,320 - main - INFO - 
+Starting Epoch 3/20
+2025-02-03 18:43:04,542 - main - INFO - Generating plots for current epoch...
+2025-02-03 18:43:05,278 - main - INFO - Plots updated in: /home/ishihab/Documents/qnn_project-farabi_implement/src/plots
+2025-02-03 18:43:05,278 - main - INFO - Epoch 3/20 Results:
+  Loss: 0.6021
+  Validation Accuracy: 0.8700
+  TPR: 0.3399
+  FPR: 0.0766
+  Time: 44785.31s
+2025-02-03 18:43:05,288 - main - INFO - Model checkpoint saved for epoch 3
+2025-02-03 18:43:05,288 - main - INFO - 
+Starting Epoch 4/20

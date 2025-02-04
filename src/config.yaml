@@ -1,13 +1,13 @@
-in_features: 10
+in_features: 13
 num_classes: 3
 n_layers: 3
 layer_widths: [10,8, 6]
 cutoff_dim: 5
-num_epochs: 2
-batch_size: 12
+num_epochs: 20
+batch_size: 128
 learning_rate: 0.001
-train_size: 24
-num_samples: 30 
+train_size: 256
+num_samples: 128 
 checkpoint_dir: "checkpoints"
 plots_dir: "plots"
 checkpoint_frequency: 5
@@ -20,7 +20,7 @@ data:
     'tcp_udp_ratio_bytes', 'dir_ratio_packets', 'dir_ratio_bytes', 
     'avg_duration', 'avg_ttl'
   ]
-  file_pattern: "*18055.csv"
+  file_pattern: "*55.csv"
   test_size: 0.2
   random_state: 42
   outlier_removal: true

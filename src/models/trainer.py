@@ -23,7 +23,7 @@ class ModelTrainer:
         self.logger = logging.getLogger(__name__)
         
         # Setup device and GPU info
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda")
         if torch.cuda.is_available():
             self.logger.info(
                 f"CUDA is available. Using GPU:\n"

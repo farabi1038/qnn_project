@@ -4,89 +4,52 @@ import pennylane as qml
 import numpy as np
 import logging
 from typing import List, Dict, Optional
+import torch.nn.functional as F
+from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.distributed as dist
+import os
 
-def quantum_feature_encoding(x_input, wires):
-    """Simple displacement-based encoding on the given 'wires'."""
-    # Ensure we don't try to encode more features than we have wires
-    n_features = len(x_input)
-    n_wires = len(wires)
-    n_encode = min(n_features, n_wires)
-    
-    for i in range(n_encode):
-        qml.Displacement(float(x_input[i]), 0.0, wires=wires[i])
+logging.basicConfig(level=logging.INFO)
 
-def interferometer(params, wires):
-    """Implement interferometer layer."""
-    n = len(wires)
-    if n <= 1:  # Skip if only one wire
-        return
-        
-    chunk = (n - 1)
-    thetas = params[0:chunk]
-    phis = params[chunk:2*chunk]
-    rloc = params[2*chunk:3*chunk]
+def setup_ddp(rank: int, world_size: int):
+    """Setup for distributed data parallel training."""
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '12355'
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    torch.cuda.set_device(rank)
 
-    for i in range(n-1):
-        qml.Beamsplitter(float(thetas[i]), float(phis[i]), wires=[wires[i], wires[i+1]])
-        qml.Rotation(float(rloc[i]), wires=wires[i])
+class CVLayer(nn.Module):
+    """Represents a single CV quantum layer with trainable parameters."""
+    def __init__(self, n_wires: int, device: str = "cuda"):
+        super().__init__()
+        if n_wires <= 1:
+            return
+            
+        # Initialize parameters with better scaling
+        scale = 0.1  # Reduced scale for better initial convergence
+        self.int1 = nn.Parameter(
+            torch.randn(3 * (n_wires - 1), device=device) * scale
+        )
+        self.squeezes = nn.Parameter(
+            torch.randn(n_wires, device=device) * scale
+        )
+        self.int2 = nn.Parameter(
+            torch.randn(3 * (n_wires - 1), device=device) * scale
+        )
+        self.displacements = nn.Parameter(
+            torch.randn(n_wires, device=device) * scale
+        )
 
-def cv_layer(params: Dict, wires: List[int]):
-    """
-    Implement a single CV layer with:
-    - Interferometer U1
-    - local Squeezing
-    - Interferometer U2
-    - local Displacements
-    (Removed Kerr operations as they're not supported by gaussian devices)
-    """
-    n = len(wires)
-    if n <= 0:  # Safety check
-        return
-        
-    # 1) U1
-    interferometer(params['int1'], wires)
-    
-    # 2) Squeezing
-    for i in range(n):
-        qml.Squeezing(float(params['squeezes'][i]), 0.0, wires=wires[i])
-    
-    # 3) U2
-    interferometer(params['int2'], wires)
-    
-    # 4) Displacements
-    for i in range(n):
-        qml.Displacement(float(params['displacements'][i]), 0.0, wires=wires[i])
-
-def make_cv_qnode(n_layers: int, layer_widths: List[int], out_classes: int = 3, cutoff: int = 6):
-    """Create a QNode for 3-class classification."""
-    # Ensure we have enough wires for both input features and output classes
-    max_width = max(max(layer_widths), out_classes)
-    
-    # Use default.gaussian instead of strawberryfields.fock
-    dev = qml.device("default.gaussian", wires=max_width)
-
-    @qml.qnode(dev, interface="torch")
-    def circuit(all_params, x_input):
-        # 1) encode
-        input_wires = range(layer_widths[0])
-        quantum_feature_encoding(x_input, wires=input_wires)
-
-        # 2) layers
-        for idx in range(n_layers):
-            n_qumodes = layer_widths[idx]
-            layer_wires = range(n_qumodes)
-            cv_layer(all_params[idx], wires=layer_wires)
-
-        # 3) measure out_classes wires using number operator
-        measurements = []
-        for w in range(min(out_classes, max_width)):
-            measurements.append(qml.expval(qml.NumberOperator(wires=w)))
-        return measurements
-    
-    return circuit
+    def get_parameters(self) -> Dict[str, torch.Tensor]:
+        return {
+            'int1': self.int1,
+            'squeezes': self.squeezes,
+            'int2': self.int2,
+            'displacements': self.displacements
+        }
 
 class CVQNNClassifier(nn.Module):
-    """Multi-class CV-QNN with trainable parameters across multiple layers."""
+    """Multi-GPU optimized CV-QNN classifier."""
     
     def __init__(
         self,
@@ -94,14 +57,17 @@ class CVQNNClassifier(nn.Module):
         n_layers: int = 2,
         layer_widths: Optional[List[int]] = None,
         out_classes: int = 3,
-        cutoff: int = 6
+        cutoff: int = 6,
+        device: str = "cuda",
+        rank: int = 0
     ):
         super().__init__()
         self.logger = logging.getLogger(__name__)
+        self.device = device
+        self.rank = rank
         
         if layer_widths is None:
             layer_widths = [max(in_features, out_classes)] * n_layers
-        
         layer_widths[0] = max(layer_widths[0], in_features)
         
         self.in_features = in_features
@@ -109,75 +75,140 @@ class CVQNNClassifier(nn.Module):
         self.n_layers = n_layers
         self.layer_widths = layer_widths
         self.cutoff = cutoff
+        
+        # Initialize quantum layers
+        self.quantum_layers = nn.ModuleList([
+            CVLayer(width, device=device)
+            for width in self.layer_widths
+        ])
+        
+        # Create quantum circuits for each GPU
+        self.create_circuit()
+        
+        if rank == 0:
+            self.logger.info(
+                f"Initialized Multi-GPU CVQNNClassifier\n"
+                f"Input features: {in_features}\n"
+                f"Number of layers: {n_layers}\n"
+                f"Layer widths: {layer_widths}\n"
+                f"Output classes: {out_classes}\n"
+                f"Running on GPU {rank}"
+            )
 
-        self.qnode = make_cv_qnode(n_layers, layer_widths, out_classes, cutoff)
-
-        # Build trainable layer params (removed Kerr parameters)
-        self.layer_params = nn.ParameterList()
-        for layer_idx in range(self.n_layers):
-            n = self.layer_widths[layer_idx]
-            if n <= 1:
-                continue
-                
-            int1_size = 3*(n-1)
-            int2_size = 3*(n-1)
-            
-            p_int1 = nn.Parameter(0.1*torch.randn(int1_size))
-            p_squeezes = nn.Parameter(0.1*torch.randn(n))
-            p_int2 = nn.Parameter(0.1*torch.randn(int2_size))
-            p_disp = nn.Parameter(0.1*torch.randn(n))
-            
-            self.layer_params.append(nn.ParameterList([
-                p_int1, p_squeezes, p_int2, p_disp
-            ]))
-            
-        self.logger.info(
-            f"Initialized CVQNNClassifier with:\n"
-            f"  Input features: {in_features}\n"
-            f"  Number of layers: {n_layers}\n"
-            f"  Layer widths: {layer_widths}\n"
-            f"  Output classes: {out_classes}\n"
-            f"  Cutoff dimension: {cutoff}"
-        )
-
-    def forward(self, x_batch: torch.Tensor) -> torch.Tensor:
-        """Forward pass through the quantum circuit."""
+    def create_circuit(self):
+        """Creates quantum circuits optimized for current GPU."""
+        max_width = max(max(self.layer_widths), self.out_classes)
         try:
-            # Prepare layer parameters
-            all_params = []
-            for layer_idx in range(self.n_layers):
-                if layer_idx >= len(self.layer_params):
-                    continue
-                    
-                p_list = list(self.layer_params[layer_idx])
-                param_dict = {
-                    'int1': p_list[0],
-                    'squeezes': p_list[1],
-                    'int2': p_list[2],
-                    'displacements': p_list[3]
-                }
-                all_params.append(param_dict)
+            dev = qml.device(
+                "default.gaussian",
+                wires=max_width
+            )
+        except Exception as e:
+            self.logger.error(f"Failed to create quantum device on GPU {self.rank}: {e}")
+            raise
 
-            # Process each sample in batch
-            outputs = []
-            for sample in x_batch:
-                # Convert qnode output to tensor and ensure gradients
-                meas = self.qnode(all_params, sample)
-                if isinstance(meas, tuple):
-                    meas = torch.stack([torch.tensor(m, requires_grad=True) for m in meas])
-                else:
-                    meas = torch.as_tensor(meas).clone().detach().requires_grad_(True).to(x_batch.device)
+        @qml.qnode(dev, interface="torch", diff_method="parameter-shift")
+        def circuit(x_input, params_dict):
+            # Encode features
+            for i in range(self.layer_widths[0]):
+                qml.Displacement(x_input[i], 0.0, wires=i)
+
+            # Apply CV layers with better batching
+            for layer_idx, layer_params in enumerate(params_dict):
+                n = self.layer_widths[layer_idx]
+                if n <= 1:
+                    continue
+
+                # Group operations for better parallelization
+                # Interferometer 1
+                for i in range(0, n-1, 2):
+                    # Parallel application for non-overlapping pairs
+                    qml.Beamsplitter(
+                        layer_params['int1'][3*i],
+                        layer_params['int1'][3*i + 1],
+                        wires=[i, i + 1]
+                    )
                 
-                # Transform measurements to logits and maintain gradients
-                logits = torch.log1p(meas)
-                outputs.append(logits)
+                for i in range(1, n-1, 2):
+                    qml.Beamsplitter(
+                        layer_params['int1'][3*i],
+                        layer_params['int1'][3*i + 1],
+                        wires=[i, i + 1]
+                    )
+                
+                # Grouped rotations
+                for i in range(n-1):
+                    qml.Rotation(layer_params['int1'][3*i + 2], wires=i)
+
+                # Parallel squeezing
+                for i in range(n):
+                    qml.Squeezing(layer_params['squeezes'][i], 0.0, wires=i)
+
+                # Interferometer 2 (same parallel structure)
+                for i in range(0, n-1, 2):
+                    qml.Beamsplitter(
+                        layer_params['int2'][3*i],
+                        layer_params['int2'][3*i + 1],
+                        wires=[i, i + 1]
+                    )
+                
+                for i in range(1, n-1, 2):
+                    qml.Beamsplitter(
+                        layer_params['int2'][3*i],
+                        layer_params['int2'][3*i + 1],
+                        wires=[i, i + 1]
+                    )
+
+                # Parallel displacements
+                for i in range(n):
+                    qml.Displacement(layer_params['displacements'][i], 0.0, wires=i)
+
+            # Parallel measurement
+            return [qml.expval(qml.NumberOperator(wires=w)) 
+                   for w in range(min(self.out_classes, max_width))]
+
+        self.circuit = circuit
+
+    @torch.cuda.amp.autocast()
+    def forward(self, x_batch: torch.Tensor) -> torch.Tensor:
+        """Multi-GPU optimized forward pass."""
+        try:
+            x_batch = x_batch.to(self.device)
             
-            # Stack all outputs and ensure gradients are maintained
-            output_tensor = torch.stack(outputs)
-            output_tensor.requires_grad_(True)
+            # Get parameters
+            params_dict = [
+                layer.get_parameters()
+                for layer in self.quantum_layers
+                if hasattr(layer, 'get_parameters')
+            ]
             
-            return output_tensor
+            # Process local batch chunk
+            batch_size = x_batch.shape[0]
+            outputs = []
+            
+            # Parallel processing of local batch
+            for i in range(batch_size):
+                x_sample = x_batch[i]
+                result = self.circuit(x_sample, params_dict)
+                result_tensor = torch.as_tensor(result, dtype=torch.float32, device=self.device)
+                outputs.append(result_tensor)
+            
+            # Efficient stacking
+            measurements = torch.stack(outputs, dim=0)
+            
+            return torch.log1p(F.relu(measurements))
             
         except Exception as e:
-            self.logger.error(f"Error in forward pass: {str(e)}")
-            raise 
+            self.logger.error(f"Error in forward pass on GPU {self.rank}: {e}")
+            raise
+
+def train_parallel(rank, world_size, model_args):
+    """Training function for distributed training."""
+    setup_ddp(rank, world_size)
+    
+    # Create model for this GPU
+    model = ParallelCVQNNClassifier(**model_args, rank=rank).to(rank)
+    model = DDP(model, device_ids=[rank])
+    
+    return model
+
