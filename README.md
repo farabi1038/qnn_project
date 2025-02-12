@@ -1,2 +1,0 @@
-# quatum_anomaly
- 
