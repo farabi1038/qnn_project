@@ -123,7 +123,6 @@ The architecture implements a novel approach to network security through:
 - Python 3.8+
 - PyTorch 1.10+
 - PennyLane 0.21+ (for quantum simulation)
-- TensorFlow 2.6+ (optional)
 
 ## Installation
 
