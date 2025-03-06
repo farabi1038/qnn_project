@@ -2,7 +2,7 @@
 
 A scalable quantum-classical hybrid platform that integrates Quantum Neural Networks (QNN) for anomaly detection with Zero Trust Architecture (ZTA) for enhanced security in next-generation networks.
 
-![Quantum ZTA paper ](https://arxiv.org/abs/2502.07779)
+[Quantum ZTA paper ](https://arxiv.org/abs/2502.07779)
 
 ## Table of Contents
 - [Overview](#overview)
@@ -348,13 +348,14 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 If you use this software in your research, please cite our paper:
 
 ```
-@article{ahmed2025quantum,
-  title={Quantum-driven ZTA with Dynamic Anomaly Detection in 7G Technology: A Neural Network Approach},
-  author={Ahmed, S. and others},
-  journal={SoftwareX},
-  volume={4},
-  pages={1--21},
-  year={2025}
+@misc{ahmed2025quantumdrivenzerotrustframework,
+      title={Quantum-driven Zero Trust Framework with Dynamic Anomaly Detection in 7G Technology: A Neural Network Approach}, 
+      author={Shakil Ahmed and Ibne Farabi Shihab and Ashfaq Khokhar},
+      year={2025},
+      eprint={2502.07779},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph},
+      url={https://arxiv.org/abs/2502.07779}, 
 }
 ```
 
